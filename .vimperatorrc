@@ -1,0 +1,18 @@
+"3.8.2 (created: 2014/02/13 23:52:43)
+
+" inoremap jk <C-t>
+inoremap <C-a> <C-Home><C-S-End>
+nnoremap l 3l
+nnoremap h 3h
+nnoremap j 3j
+nnoremap k 3k
+set complete=blsS
+set "editor=vim -p"
+set tabnumbers
+set previouspattern='^\s*Prev(ious)? Page\s*$','[<«‹] Prev\s*$','\bprev(ious)?\b',^(<|‹)$,'^(<<|«)$','^(<|«)','(<|«)$'
+set nextpattern='^\s*Next Page\s*$','^\s*Next [›>»]','\bnext\b',^(>|›)$,'^(>>|»)$','^(>|»)','(>|»)$','\bmore\b'
+set animations
+colorscheme seaweed
+source! /home/edward/.vimperatorrc.local
+
+" vim: set ft=vimperator:
