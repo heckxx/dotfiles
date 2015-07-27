@@ -30,13 +30,13 @@ for file in $files; do
     echo "Moving any existing dotfiles from ~ to $olddir"
     mv ~/.$file ~/dotfiles_old/
     echo "Creating symlink to $file in home directory."
-    ln -s $dir/$file ~/.$file
+    ln -s $dir/.$file ~/.$file
 done
 echo "Installing .config dotfiles"
 for conf in $conf; do
     echo "Moving any existing dotfiles from ~ to $olddir"
-    mv ~/.$conf ~/dotfiles_old/
+    mv ~/.config/$conf ~/dotfiles_old/
     echo "Creating symlink to $conf in home directory."
-    ln -s $dir/$conf ~/.$conf
+    ln -s $dir/.config/$conf ~/.config/$conf
 done
 echo "Done!"
