@@ -67,6 +67,11 @@ widgets.mpdwidget = lain.widgets.mpd({
         widget:set_markup(markup("#EA6F81", artist) .. title)
     end
 })
+widgets.mpdwidget:buttons(awful.util.table.join(
+    awful.button({ },9, function () os.execute("mpc next") end),
+    awful.button({ },8, function () os.execute("mpc prev") end)
+))
+
 
 -- MEM
 widgets.memicon = wibox.widget.imagebox(beautiful.widget_mem)
@@ -119,6 +124,7 @@ widgets.batwidget = lain.widgets.bat({
         widget:set_markup("" .. bat_now.perc .. "% ")
     end
 })
+--
 -- ALSA volume
 widgets.volicon = wibox.widget.imagebox(beautiful.widget_vol)
 widgets.volumewidget = lain.widgets.alsa({
@@ -132,7 +138,6 @@ widgets.volumewidget = lain.widgets.alsa({
         else
             widgets.volicon:set_image(beautiful.widget_vol)
         end
-
         widget:set_text("" .. volume_now.level .. "% ")
     end
 })

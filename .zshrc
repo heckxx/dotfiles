@@ -1,5 +1,6 @@
 # Path to your oh-my-zsh installation.
 export ZSH=/home/edward/.oh-my-zsh
+source /usr/share/doc/pkgfile/command-not-found.zsh
 
 # Set name of the theme to load.
 # Look in ~/.oh-my-zsh/themes/
@@ -93,3 +94,4 @@ export VISUAL="vim"
 export EDITOR="vim"
 
 trap "~/.config/scripts/colorshift.sh < ~/.Xcolors" USR1
+~/.config/scripts/todo.sh

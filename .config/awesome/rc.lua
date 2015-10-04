@@ -113,9 +113,9 @@ tags = {
     --7 Devel
     --8 Devel
     --9 System
-    names  = { "", "🌎", "🚀", "📁", "♫", "🎬", "💼", "⚒", "💻"},
+    names  = { "", "🌎", "🚀", "📁", "♫", "🎬", "⚒", "💼", "💻"},
     --name = { Empty       Browser     Steam       Files       Music       Video       Devel       Devel       System}
-    layout = { layouts[1], layouts[1], layouts[4], layouts[3], layouts[2], layouts[5], layouts[2], layouts[4], layouts[3]}
+    layout = { layouts[1], layouts[1], layouts[4], layouts[1], layouts[2], layouts[5], layouts[2], layouts[4], layouts[3]}
 }
 for s = 1, screen.count() do
     -- Each screen has its own tag table.
@@ -329,6 +329,8 @@ awful.rules.rules = {
       properties = { tag = tags[1][4] } },
     { rule = { class = "Nulloy" },
       properties = { tag = tags[1][5] } },
+    { rule = { class = "Bitwig Studio" },
+      properties = { tag = tags[1][1] } },
     { rule = { class = "Vlc" },
       properties = { opacity = 1 } }
 }

@@ -6,7 +6,7 @@ theme = {}
 themes_dir          = os.getenv("HOME") .. "/.config/awesome/themes/default"
 
 theme.font          = "sans 8"
-theme.taglist_font  = "Entypo 10"
+theme.taglist_font  = "entypo 10"
 
 theme.bg_normal     = "#222222"
 theme.bg_focus      = "#333333"

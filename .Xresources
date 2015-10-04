@@ -6,6 +6,7 @@ Xft.antialias:  true
 Xft.rgba:       rgb
 Xft.hinting:    true
 Xft.hintstyle:  hintslight
+Xft.lcdfilter:  lcddefault
 
 !urxvt color scheme:
 URxvt*background: [80]Black
