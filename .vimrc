@@ -21,14 +21,16 @@ Plug 'bling/vim-airline'
 Plug 'tpope/vim-sensible'                   " Sensible vimrc
 Plug 'tpope/vim-surround'
 Plug 'sjl/gundo.vim'                        " Graphical Undo
+Plug 'SirVer/ultisnips'
+Plug 'honza/vim-snippets'
 Plug 'altercation/vim-colors-solarized' " Solarized
 Plug 'junegunn/vim-easy-align'          " easy align
 Plug 'nathanaelkane/vim-indent-guides'
 Plug 'scrooloose/syntastic'             " Syntastic
+Plug 'Valloric/YouCompleteMe', { 'do': './install.py --clang-completer --omnisharp-completer' }
 Plug 'ctrlpvim/ctrlp.vim'
 Plug 'irrationalistic/vim-tasks'
 Plug 'lervag/vimtex'
-Plug 'ervandew/supertab'
 Plug 'vim-scripts/vim-auto-save'
 Plug 'nanotech/jellybeans.vim'
 " Plugin 'ardagnir/vimbed'                  " For pterosaur
@@ -116,6 +118,13 @@ let g:auto_save_in_insert_mode = 0
 let g:syntastic_cpp_checkers = ['clang_check', 'gcc']
 let g:syntastic_c_checkers = ['clang_check', 'gcc']
 let g:syntastic_python_checkers = ['/usr/sbin/python2']
+"__ULTISNIPS
+let g:UltiSnipsExpandTrigger="<c-Space>"
+let g:UltiSnipsJumpForwardTrigger="<c-b>"
+let g:UltiSnipsJumpBackwardTrigger="<c-z>"
+
+" If you want :UltiSnipsEdit to split your window.
+let g:UltiSnipsEditSplit="vertical"
 
 "_PLUGINKEYBINDINGS
 nnoremap <leader>u :GundoToggle<CR>

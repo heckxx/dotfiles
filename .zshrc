@@ -94,4 +94,4 @@ export VISUAL="vim"
 export EDITOR="vim"
 
 trap "~/.config/scripts/colorshift.sh < ~/.Xcolors" USR1
-~/.config/scripts/todo.sh
+~/git/projects/todo/todo.py
