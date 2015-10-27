@@ -89,6 +89,7 @@ alias rm='rm -I'
 alias variety='~/.config/scripts/wallpaper.py'
 alias ayylmao='figlet ayylmao'
 alias nemo='nemo --no-desktop'
+alias git='hub'
 
 export VISUAL="vim"
 export EDITOR="vim"

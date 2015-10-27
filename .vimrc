@@ -43,7 +43,7 @@ hi NonText ctermbg=NONE
 hi Normal ctermbg=NONE
 " Mark over 80 lines
 highlight ColorColumn ctermbg=darkgrey
-"set colorcolumn=81
+" set colorcolumn=81
 call matchadd('ColorColumn','\%81v',100)
 " Indent settings
 set ts=4 sw=4 sts=4 et   "Spaces
