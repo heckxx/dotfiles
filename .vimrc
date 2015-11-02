@@ -122,9 +122,10 @@ let g:syntastic_python_checkers = ['/usr/sbin/python2']
 let g:UltiSnipsExpandTrigger="<c-Space>"
 let g:UltiSnipsJumpForwardTrigger="<c-b>"
 let g:UltiSnipsJumpBackwardTrigger="<c-z>"
-
 " If you want :UltiSnipsEdit to split your window.
 let g:UltiSnipsEditSplit="vertical"
+"__TASKS
+let g:TasksAttributeMarker = '#'
 
 "_PLUGINKEYBINDINGS
 nnoremap <leader>u :GundoToggle<CR>

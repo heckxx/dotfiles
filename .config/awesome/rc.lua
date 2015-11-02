@@ -69,7 +69,7 @@ editor_cmd = terminal .. " -e " .. editor
 -- If you do not like this or do not have such a key,
 -- I suggest you to remap Mod4 to another key using xmodmap or other tools.
 -- However, you can use another modifier like Mod1, but it may interact with others.
--- MODKEY: left ctrl
+-- MODKEY: left caps
 modkey = "Mod3"
 altkey = "Mod1"
 
@@ -86,7 +86,7 @@ local layouts =
     --awful.layout.suit.fair.horizontal,
     --awful.layout.suit.spiral,
     --awful.layout.suit.spiral.dwindle,
-    --awful.layout.suit.max,
+    awful.layout.suit.max,
     --awful.layout.suit.max.fullscreen,
     awful.layout.suit.magnifier
 }
@@ -115,7 +115,7 @@ tags = {
     --9 System
     names  = { "", "🌎", "🚀", "📁", "♫", "🎬", "⚒", "💼", "💻"},
     --name = { Empty       Browser     Steam       Files       Music       Video       Devel       Devel       System}
-    layout = { layouts[1], layouts[1], layouts[4], layouts[1], layouts[2], layouts[5], layouts[2], layouts[4], layouts[3]}
+    layout = { layouts[1], layouts[2], layouts[4], layouts[1], layouts[2], layouts[6], layouts[2], layouts[4], layouts[3]}
 }
 for s = 1, screen.count() do
     -- Each screen has its own tag table.
@@ -318,7 +318,7 @@ awful.rules.rules = {
       properties = { tag = tags[1][1] } },
     { rule = { class = "Terraria.bin.x86_64" },
       properties = { tag = tags[1][1] } },
-    { rule = { class = "Binding of Isaac: Rebirth" },
+    { rule = { class = "Binding of Isaac: Afterbirth" },
       properties = { tag = tags[1][1] } },
     { rule = { class = "Firefox" },
       properties = { tag = tags[1][2],
