@@ -17,7 +17,7 @@ function run_once(prg,arg_string,pname,screen)
 end
 
 --startup scripts/settings
-run_once("~/.config/scripts/wallpaper.py","slideshow"); -- wallpaper changer
+run_once("~/.config/scripts/wallpaper","slideshow"); -- wallpaper changer
 --run_once("xset","m 0 0"); -- disable mouse acceleration
 run_once("xset","-b"); -- disable hardware beep
 run_once("xset","s 1800"); -- Screenlock at 30 minutes
@@ -28,13 +28,14 @@ run_once("/usr/lib/polkit-gnome/polkit-gnome-authentication-agent-1"); -- Authen
 --startup services/daemons
 run_once("redshift");
 run_once("deluge");
-run_once("subsonic");
+--run_once("subsonic");
 run_once("mpd");
 run_once("mpdscribble");
 run_once("dropbox start");
 run_once("xbindkeys");
+run_once("numlockx on");
 --startup programs
 run_once("firefox",nil,nil,2);
-run_once("steam",nil,nil,2);
+run_once("steam");
 run_once("nulloy",nil,nil,2);
 

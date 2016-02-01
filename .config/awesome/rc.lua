@@ -115,7 +115,7 @@ tags = {
     --9 System
     names  = { "", "🌎", "🚀", "📁", "♫", "🎬", "⚒", "💼", "💻"},
     --name = { Empty       Browser     Steam       Files       Music       Video       Devel       Devel       System}
-    layout = { layouts[1], layouts[2], layouts[4], layouts[1], layouts[2], layouts[6], layouts[2], layouts[4], layouts[3]}
+    layout = { layouts[1], layouts[2], layouts[4], layouts[2], layouts[2], layouts[6], layouts[3], layouts[4], layouts[3]}
 }
 for s = 1, screen.count() do
     -- Each screen has its own tag table.
@@ -251,7 +251,10 @@ for s = 1, screen.count() do
     right_layout_add(widgets.memicon, widgets.memwidget)
     --right_layout_add(widgets.tempicon, widgets.tempwidget)
     --right_layout_add(widgets.fsicon, widgets.fswidget)
-    right_layout_add(widgets.baticon, widgets.batwidget)
+
+    --LAPTOP - battery icon
+    --right_layout_add(widgets.baticon, widgets.batwidget)
+
     right_layout_add(widgets.neticon, widgets.netwidget)
     right_layout_add(widgets.clockicon, widgets.mytextclock)
     right_layout_add(widgets.spr,mylayoutbox[s])

@@ -27,7 +27,7 @@ Plug 'altercation/vim-colors-solarized' " Solarized
 Plug 'junegunn/vim-easy-align'          " easy align
 Plug 'nathanaelkane/vim-indent-guides'
 Plug 'scrooloose/syntastic'             " Syntastic
-Plug 'Valloric/YouCompleteMe', { 'do': './install.py --clang-completer --omnisharp-completer' }
+" Plug 'Valloric/YouCompleteMe', { 'do': './install.py --clang-completer --omnisharp-completer' }
 Plug 'ctrlpvim/ctrlp.vim'
 Plug 'irrationalistic/vim-tasks'
 Plug 'lervag/vimtex'

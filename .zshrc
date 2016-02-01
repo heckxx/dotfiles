@@ -6,7 +6,7 @@ source /usr/share/doc/pkgfile/command-not-found.zsh
 # Look in ~/.oh-my-zsh/themes/
 # Optionally, if you set this to "random", it'll load a random theme each
 # time that oh-my-zsh is loaded.
-ZSH_THEME="alanpeabody"
+ZSH_THEME="todo"
 
 # Uncomment the following line to use case-sensitive completion.
 # CASE_SENSITIVE="true" 
@@ -49,7 +49,7 @@ plugins=(command-not-found git common-aliases git-extras compleat zsh-syntax-hig
 
 # User configuration
 
-export PATH="/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin"
+export PATH="/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/usr/bin/core_perl"
 # export MANPATH="/usr/local/man:$MANPATH"
 
 #### startup tmux
@@ -86,13 +86,16 @@ alias :e="vim"
 alias :q="exit"
 alias please='sudo $(fc -ln -1)'
 alias rm='rm -I'
-alias variety='~/.config/scripts/wallpaper.py'
+alias variety='~/.config/scripts/wallpaper'
 alias ayylmao='figlet ayylmao'
 alias nemo='nemo --no-desktop'
 alias git='hub'
 
 export VISUAL="vim"
 export EDITOR="vim"
+export QT_STYLE_OVERRIDE=GTK+
+export STEAM_RUNTIME=0
+
 
 trap "~/.config/scripts/colorshift.sh < ~/.Xcolors" USR1
 ~/git/projects/todo/todo.py
