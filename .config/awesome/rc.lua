@@ -115,7 +115,7 @@ tags = {
     --9 System
     names  = { "", "🌎", "🚀", "📁", "♫", "🎬", "⚒", "💼", "💻"},
     --name = { Empty       Browser     Steam       Files       Music       Video       Devel       Devel       System}
-    layout = { layouts[1], layouts[2], layouts[4], layouts[2], layouts[2], layouts[6], layouts[3], layouts[4], layouts[3]}
+    layout = { layouts[1], layouts[2], layouts[4], layouts[2], layouts[2], layouts[6], layouts[3], layouts[3], layouts[3]}
 }
 for s = 1, screen.count() do
     -- Each screen has its own tag table.
