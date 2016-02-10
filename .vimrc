@@ -20,7 +20,7 @@ call plug#begin('~/.vim/plugins')
 Plug 'bling/vim-airline'
 Plug 'tpope/vim-sensible'                   " Sensible vimrc
 Plug 'tpope/vim-surround'
-Plug 'sjl/gundo.vim'                        " Graphical Undo
+Plug 'mbbill/undotree'
 Plug 'SirVer/ultisnips'
 Plug 'honza/vim-snippets'
 Plug 'altercation/vim-colors-solarized' " Solarized
@@ -58,12 +58,14 @@ set ignorecase smartcase
 set hlsearch
 set splitbelow
 set splitright
+" spellcheck
+autocmd BufRead,BufNewFile notes setlocal spell spelllang=en_us spellcapcheck=''
+
 
 "_PROGRAM
 " centralized directory for backup/swap files
 set backupdir=~/.vim/backup//
 set directory=~/.vim/swap//
-set undodir=~/.vim/undo//
 " Save as sudo when vim is not root
 cmap w!! w !sudo tee > /dev/null %
 
@@ -127,8 +129,15 @@ let g:UltiSnipsJumpBackwardTrigger="<c-z>"
 let g:UltiSnipsEditSplit="vertical"
 "__TASKS
 let g:TasksAttributeMarker = '#'
+"__UNDOTREE
+if has("persistent_undo")
+    set undodir=~/.vim/undo/
+    set undofile
+endif
+let g:undotree_WindowLayout = 2
+let g:undotree_SetFocusWhenToggle = 1
 
 "_PLUGINKEYBINDINGS
-nnoremap <leader>u :GundoToggle<CR>
+nnoremap <leader>u :UndotreeToggle<CR>
 vmap <Enter> <Plug>(EasyAlign)
 nmap <Leader>a <Plug>(EasyAlign)
