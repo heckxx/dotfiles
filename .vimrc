@@ -44,12 +44,13 @@ hi Normal ctermbg=NONE
 " Mark over 80 lines
 highlight ColorColumn ctermbg=darkgrey
 " set colorcolumn=81
-call matchadd('ColorColumn','\%81v',100)
+autocmd FileType python call matchadd('ColorColumn','\%81v',100)
 " Indent settings
 set ts=4 sw=4 sts=4 et   "Spaces
 " set ts=4 sw=4 sts=0 noet "Tabs
 set list listchars=tab:▸\ ,trail:·
 set smarttab
+set modeline
 set visualbell
 set number relativenumber numberwidth=2
 set showcmd
