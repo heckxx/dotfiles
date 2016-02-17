@@ -57,6 +57,9 @@ export PATH="/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/usr/b
   #[[ ! $TERM =~ screen ]] && [ -z $TMUX ] && exec tmux -2
 #fi
 source $ZSH/oh-my-zsh.sh
+#
+# fuzzy completion
+zstyle ':completion:*' matcher-list 'r:[[:ascii:]]||[[:ascii:]]=** r:|=* m:{a-z\-}={A-Z\_}'
 
 # You may need to manually set your language environment
 # export LANG=en_US.UTF-8

@@ -6,6 +6,9 @@
 " __AIRLINE
 " __AUTOSAVE
 " __SYNTASTIC
+" __TASKS
+" __ULTISNIPS
+" __UNDOTREE
 " _PLUGINKEYBINDINGS
 
 set nocompatible              " be iMproved, required
@@ -69,6 +72,7 @@ set directory=~/.vim/swap//
 " Save as sudo when vim is not root
 cmap w!! w !sudo tee > /dev/null %
 
+
 "__KEYBINDINGS
 " split navigation ctrl+direction
 nnoremap <c-j> <c-w><c-j>
@@ -85,6 +89,7 @@ nmap <Space> <leader>
 "__AIRLINE
 let g:airline#extensions#tabline#enabled=1
 let g:airline#extensions#syntastic#enabled=1
+let g:airline#extensions#tabline#buffer_nr_show=1
 let g:airline_theme='dark'
 let g:airline_powerline_fonts=1
 if !exists('g:airline_symbols')
@@ -117,18 +122,20 @@ let g:airline_symbols.linenr = ''
 let g:auto_save = 1
 let g:auto_save_no_updatetime = 1
 let g:auto_save_in_insert_mode = 0
+"__CTRLP
+"
 "__SYNTASTIC
 let g:syntastic_cpp_checkers = ['clang_check', 'gcc']
 let g:syntastic_c_checkers = ['clang_check', 'gcc']
 let g:syntastic_python_checkers = ['/usr/sbin/python2']
+"__TASKS
+let g:TasksAttributeMarker = '#'
 "__ULTISNIPS
 let g:UltiSnipsExpandTrigger="<c-Space>"
 let g:UltiSnipsJumpForwardTrigger="<c-b>"
 let g:UltiSnipsJumpBackwardTrigger="<c-z>"
 " If you want :UltiSnipsEdit to split your window.
 let g:UltiSnipsEditSplit="vertical"
-"__TASKS
-let g:TasksAttributeMarker = '#'
 "__UNDOTREE
 if has("persistent_undo")
     set undodir=~/.vim/undo/
