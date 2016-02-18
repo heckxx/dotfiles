@@ -12,7 +12,7 @@
 " _PLUGINKEYBINDINGS
 
 set nocompatible              " be iMproved, required
-filetype off  
+filetype off
 " required
 syntax enable
 colorscheme jellybeans
@@ -81,8 +81,9 @@ nnoremap <c-l> <c-w><c-l>
 nnoremap <c-k> <c-w><c-k>
 nnoremap j gj
 nnoremap k gk
-inoremap jk <Esc>
-nmap <Space> <leader>
+inoremap jk <esc>
+nmap <space> <leader>
+nmap <leader>s 1z=
 
 "_PLUGIN
 
@@ -127,7 +128,8 @@ let g:auto_save_in_insert_mode = 0
 "__SYNTASTIC
 let g:syntastic_cpp_checkers = ['clang_check', 'gcc']
 let g:syntastic_c_checkers = ['clang_check', 'gcc']
-let g:syntastic_python_checkers = ['/usr/sbin/python2']
+let g:syntastic_python_checkers = ['python2']
+let g:syntastic_asm_checkers = ['arm-none-eabi-as']
 "__TASKS
 let g:TasksAttributeMarker = '#'
 "__ULTISNIPS
