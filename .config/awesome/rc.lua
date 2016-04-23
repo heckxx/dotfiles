@@ -253,7 +253,7 @@ for s = 1, screen.count() do
     --right_layout_add(widgets.fsicon, widgets.fswidget)
 
     --LAPTOP - battery icon
-    --right_layout_add(widgets.baticon, widgets.batwidget)
+    right_layout_add(widgets.baticon, widgets.batwidget)
 
     right_layout_add(widgets.neticon, widgets.netwidget)
     right_layout_add(widgets.clockicon, widgets.mytextclock)

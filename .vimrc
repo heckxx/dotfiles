@@ -12,7 +12,6 @@
 " _PLUGINKEYBINDINGS
 
 set nocompatible              " be iMproved, required
-filetype off
 " required
 syntax enable
 colorscheme jellybeans
@@ -71,6 +70,7 @@ set backupdir=~/.vim/backup//
 set directory=~/.vim/swap//
 " Save as sudo when vim is not root
 cmap w!! w !sudo tee > /dev/null %
+let g:netrw_liststyle=3
 
 
 "__KEYBINDINGS

@@ -1,5 +1,5 @@
-
 #!/bin/bash
+
 ############################
 # .make.sh
 # This script creates symlinks from the home directory to any desired dotfiles in ~/dotfiles
@@ -10,7 +10,7 @@
 dir=~/dotfiles                    # dotfiles directory
 olddir=~/dotfiles_old             # old dotfiles backup directory
 conf="scripts awesome compton.conf"
-files="bashrc ncmpcpp tmux.conf vim/colors vim/bundle/Vundle.vim vimperatorrc vimrc xbindkeysrc xinitc Xmodmap Xresources zshrc"    # list of files/folders to symlink in homedir
+files="bashrc ncmpcpp tmux.conf vim/colors vim/bundle/Vundle.vim vimperatorrc vimrc xbindkeysrc xprofile Xmodmap Xresources zshrc"    # list of files/folders to symlink in homedir
 
 ##########
 
