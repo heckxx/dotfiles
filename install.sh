@@ -10,7 +10,7 @@
 dir=~/dotfiles                    # dotfiles directory
 olddir=~/dotfiles_old             # old dotfiles backup directory
 conf="scripts awesome compton.conf"
-files="bashrc ncmpcpp tmux.conf vim/colors vim/bundle/Vundle.vim vimperatorrc vimrc xbindkeysrc xprofile Xmodmap Xresources zshrc"    # list of files/folders to symlink in homedir
+files="bashrc ncmpcpp tmux.conf vim vimperatorrc vimrc xbindkeysrc xprofile Xmodmap Xresources zshrc"    # list of files/folders to symlink in homedir
 
 ##########
 

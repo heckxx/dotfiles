@@ -1,7 +1,7 @@
 "3.8.2 (created: 2014/02/13 23:52:43)
 
 " inoremap jk <C-t>
-inoremap <C-a> <C-Home><C-S-End>
+inoremap <C-a> <Home><S-End>
 nnoremap l 3l
 nnoremap h 3h
 nnoremap j 3j

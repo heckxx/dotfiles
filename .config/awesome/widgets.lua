@@ -180,4 +180,12 @@ widgets.arrl:set_image(beautiful.arrl)
 widgets.arrl_dl = separators.arrow_left(beautiful.bg_focus, "alpha") 
 widgets.arrl_ld = separators.arrow_left("alpha", beautiful.bg_focus) 
 
+widgets.twitch_notify = lain.widgets.base({
+    timeout = 30,
+    cmd = "head -1 /home/edward/.config/scripts/twitch_status",
+    settings = function()
+        widget:set_text(output);
+    end
+})
+
 return widgets

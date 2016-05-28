@@ -42,7 +42,7 @@ keybindings.globalkeys = awful.util.table.join(
             awful.client.focus.byidx(-1)
             if client.focus then client.focus:raise() end
         end),
-    awful.key({ modkey }, "w", function () awful.util.spawn_with_shell("xset s activate") end),
+    awful.key({ modkey }, "w", function () awful.util.spawn_with_shell("i3lock-fancy -gp") end),
     -- awful.key({ modkey}, "w", function () mymainmenu:show() end),
     -- Layout manipulation
     awful.key({ modkey, "Shift"   }, "j", function () awful.client.swap.byidx(  1)    end),

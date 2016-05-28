@@ -25,7 +25,7 @@ Plug 'tpope/vim-surround'
 Plug 'mbbill/undotree'
 Plug 'SirVer/ultisnips'
 Plug 'honza/vim-snippets'
-Plug 'altercation/vim-colors-solarized' " Solarized
+Plug 'octol/vim-cpp-enhanced-highlight' " cpp syntax highlighting
 Plug 'junegunn/vim-easy-align'          " easy align
 Plug 'nathanaelkane/vim-indent-guides'
 Plug 'scrooloose/syntastic'             " Syntastic
@@ -120,16 +120,14 @@ let g:airline_symbols.linenr = ''
 " let g:jellybeans_background_color_256='NONE'
 
 "__AUTOSAVE
-let g:auto_save = 1
+let g:auto_save = 0
 let g:auto_save_no_updatetime = 1
 let g:auto_save_in_insert_mode = 0
 "__CTRLP
 "
 "__SYNTASTIC
-let g:syntastic_cpp_checkers = ['clang_check', 'gcc']
-let g:syntastic_c_checkers = ['clang_check', 'gcc']
-let g:syntastic_python_checkers = ['python2']
-let g:syntastic_asm_checkers = ['arm-none-eabi-as']
+"let g:syntastic_cpp_compiler_options = '$(pkg-config gtkmm-3.0 --cflags --libs)'
+"let g:syntastic_c_compiler_options = '$(pkg-config gtk+-3.0 --cflags --libs)'
 "__TASKS
 let g:TasksAttributeMarker = '#'
 "__ULTISNIPS

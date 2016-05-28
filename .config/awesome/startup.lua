@@ -20,8 +20,7 @@ end
 run_once("~/.config/scripts/wallpaper","slideshow"); -- wallpaper changer
 --run_once("xset","m 0 0"); -- disable mouse acceleration
 run_once("xset","-b"); -- disable hardware beep
-run_once("xset","s 1800"); -- Screenlock at 30 minutes
-run_once("xss-lock","-- lock -m pixelize /home/edward/.config/scripts/lock.png"); -- desktop locker
+run_once("xautolock","-detectsleep -time 30 -locker \"i3lock-fancy -gp\""); -- desktop locker
 run_once("xmodmap","~/.Xmodmap"); -- map ctrl to mod
 run_once("setxkbmap","option ctrl:nocaps"); -- map capslock to ctrl
 run_once("/usr/lib/polkit-gnome/polkit-gnome-authentication-agent-1"); -- Authentication agent (for mounting)

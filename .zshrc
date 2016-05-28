@@ -10,6 +10,7 @@ ZSH_THEME="todo"
 
 # Uncomment the following line to use case-sensitive completion.
 # CASE_SENSITIVE="true" 
+
 # Uncomment the following line to disable bi-weekly auto-update checks.
 # DISABLE_AUTO_UPDATE="true"
 
