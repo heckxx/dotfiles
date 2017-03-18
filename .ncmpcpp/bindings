@@ -406,8 +406,8 @@ def_key "N"
 #def_key "g"
 #  jump_to_position_in_song
 #
-#def_key "l"
-#  show_lyrics
+def_key "l"
+  show_lyrics
 #
 #def_key "v"
 #  reverse_selection
@@ -487,8 +487,8 @@ def_key "a"
 #def_key "!"
 #  toggle_separators_between_albums
 #
-#def_key "L"
-#  toggle_lyrics_fetcher
+def_key "L"
+  toggle_lyrics_fetcher
 #
 #def_key "F"
 #  toggle_fetching_lyrics_in_background

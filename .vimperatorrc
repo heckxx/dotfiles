@@ -6,7 +6,7 @@ nnoremap l 3l
 nnoremap h 3h
 nnoremap j 3j
 nnoremap k 3k
-set complete=blsS
+set complete=slf
 set "editor=vim -p"
 set tabnumbers
 set previouspattern='^\s*Prev(ious)? Page\s*$','[<«‹] Prev\s*$','\bprev(ious)?\b',^(<|‹)$,'^(<<|«)$','^(<|«)','(<|«)$'

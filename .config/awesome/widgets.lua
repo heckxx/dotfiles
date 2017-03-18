@@ -162,6 +162,7 @@ widgets.netwidget = lain.widgets.net({
     --stats = true,
     units = 1024^2,
     timeout = 1,
+    iface = { "enp3s0" },
     settings = function()
         if net_now.state == "up" then
             widget:set_markup(markup("#7AC82E", "" .. net_now.received)
