@@ -1,10 +1,3 @@
 let g:netrw_dirhistmax  =10
-let g:netrw_dirhist_cnt =8
-let g:netrw_dirhist_1='/etc/modprobe.d'
-let g:netrw_dirhist_2='/etc/X11/xorg.conf.d'
-let g:netrw_dirhist_3='/mnt/Stuff/Dropbox/Classes/CMSC389N/p2'
-let g:netrw_dirhist_4='/mnt/Stuff/Dropbox/Classes/CMSC389N'
-let g:netrw_dirhist_5='/mnt/Stuff/Dropbox/Classes'
-let g:netrw_dirhist_6='/mnt/Stuff/Dropbox/Classes/CMSC389N/HeredocSelfRefCode'
-let g:netrw_dirhist_7='/home/edward/git/projects/todo'
-let g:netrw_dirhist_8='/home/edward/git/projects'
+let g:netrw_dirhist_cnt =1
+let g:netrw_dirhist_1='/etc/laptop-mode/conf.d'
