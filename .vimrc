@@ -132,7 +132,7 @@ let g:airline_section_error = airline#section#create_right(['ALE'])
 " let g:jellybeans_background_color_256='NONE'
 
 "__ALE
-
+let g:ale_lint_delay = 500
 
 "__AUTOSAVE
 let g:auto_save = 0

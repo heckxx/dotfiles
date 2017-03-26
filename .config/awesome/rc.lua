@@ -44,6 +44,7 @@ end
 -- }}}
 
 -- {{{ Autostart windowless processes
+--[[
 local function run_once(cmd_arr)
     for _, cmd in ipairs(cmd_arr) do
         findme = cmd
@@ -54,29 +55,21 @@ local function run_once(cmd_arr)
         awful.spawn.with_shell(string.format("pgrep -u $USER -x %s > /dev/null || (%s)", findme, cmd))
     end
 end
+--]]
+local function run_once(cmd, name)
+    if not name then
+        name = cmd
+        firstspace = cmd:find(" ")
+        if firstspace then
+            name = cmd:sub(0, firstspace-1)
+        end
+    end
+    awful.spawn.with_shell("pgrep -u $USER -x " .. name .. " > /dev/null || (" .. cmd .. ")")
+end
 
-run_once({ "urxvtd", "unclutter -root" })
-run_once({ "compton", "-b" })
-run_once({ "xset", "-b" })
-run_once({ "redshift" })
-run_once({"~/.config/scripts/wallpaper","slideshow"}) -- wallpaper changer
---run_once("xset","m 0 0") -- disable mouse acceleration
-run_once({"xset","-b"}) -- disable hardware beep
-run_once({"xautolock","-detectsleep -time 30 -locker \"i3lock-fancy -gp\""}) -- desktop locker
-run_once({"xmodmap","~/.Xmodmap"}) -- map ctrl to mod
-run_once({"setxkbmap","option ctrl:nocaps"}) -- map capslock to ctrl
-run_once({"/usr/lib/polkit-gnome/polkit-gnome-authentication-agent-1"}) -- Authentication agent (for mounting)
---startup services/daemons
---run_once({ "deluge"})
-run_once({"mpd"})
-run_once({"mpdscribble"})
-run_once({"dropbox start"})
-run_once({"xbindkeys"})
-run_once({"numlockx on"})
---startup programs
-run_once({"firefox"})
-run_once({"env STEAM_RUNTIME=0 steam"})
-run_once({"nulloy"})
+run_once("urxvtd unclutter -root")
+run_once("compton -b")
+
 -- }}}
 
 -- {{{ Variable definitions
@@ -329,12 +322,14 @@ globalkeys = awful.util.table.join(
     --]]
 
     -- On the fly useless gaps change
-    awful.key({ altkey, "Control" }, "+", function () lain.util.useless_gaps_resize(1) end),
-    awful.key({ altkey, "Control" }, "-", function () lain.util.useless_gaps_resize(-1) end),
+    awful.key({ altkey, "Control" }, "=", function () lain.util.useless_gaps_resize(1) end,
+        {description = "increase useless gaps", group = "layout"}),
+    awful.key({ altkey, "Control" }, "-", function () lain.util.useless_gaps_resize(-1) end,
+        {description = "decrease useless gaps", group = "layout"}),
 
     -- Dynamic tagging
-    awful.key({ modkey, "Shift" }, "n", function () lain.util.add_tag() end),
-    awful.key({ modkey, "Shift" }, "r", function () lain.util.rename_tag() end),
+    awful.key({ modkey, "Control" }, "n", function () lain.util.add_tag() end),
+    awful.key({ modkey, "Control" }, "r", function () lain.util.rename_tag() end),
     awful.key({ modkey, "Shift" }, "Left", function () lain.util.move_tag(1) end),   -- move to next tag
     awful.key({ modkey, "Shift" }, "Right", function () lain.util.move_tag(-1) end), -- move to previous tag
     awful.key({ modkey, "Shift" }, "d", function () lain.util.delete_tag() end),
@@ -342,7 +337,7 @@ globalkeys = awful.util.table.join(
     -- Standard program
     awful.key({ modkey,           }, "Return", function () awful.spawn(terminal) end,
               {description = "open a terminal", group = "launcher"}),
-    awful.key({ modkey, "Control" }, "r", awesome.restart,
+    awful.key({ modkey, "Shift" }, "r", awesome.restart,
               {description = "reload awesome", group = "awesome"}),
     awful.key({ modkey, "Shift"   }, "q", awesome.quit,
               {description = "quit awesome", group = "awesome"}),
@@ -364,7 +359,7 @@ globalkeys = awful.util.table.join(
     awful.key({ modkey, "Shift"   }, "space", function () awful.layout.inc(-1)                end,
               {description = "select previous", group = "layout"}),
 
-    awful.key({ modkey, "Control" }, "n",
+    awful.key({ modkey, "Shift" }, "n",
               function ()
                   local c = awful.client.restore()
                   -- Focus restored client
@@ -386,6 +381,9 @@ globalkeys = awful.util.table.join(
               {description = "show fs", group = "widgets"}),
     awful.key({ altkey, }, "w", function () if beautiful.weather then beautiful.weather.show(7) end end,
               {description = "show weather", group = "widgets"}),
+
+    awful.key({ }, "XF86MonBrightnessDown", function () awful.spawn.with_shell("xbacklight -dec 15") end),
+    awful.key({ }, "XF86MonBrightnessUp", function () awful.spawn.with_shell("xbacklight -inc 15") end),
 
     -- ALSA volume control
     awful.key({}, "#123",
@@ -447,9 +445,9 @@ globalkeys = awful.util.table.join(
               {description = "toggle mpd widget", group = "widgets"}),
 
     -- Copy primary to clipboard (terminals to gtk)
-    awful.key({ modkey }, "c", function () awful.spawn("xsel | xsel -i -b") end),
+    -- awful.key({ modkey }, "c", function () awful.spawn("xsel | xsel -i -b") end),
     -- Copy clipboard to primary (gtk to terminals)
-    awful.key({ modkey }, "v", function () awful.spawn("xsel -b | xsel") end),
+    -- awful.key({ modkey }, "v", function () awful.spawn("xsel -b | xsel") end),
 
     -- User programs
     -- awful.key({ modkey }, "e", function () awful.spawn(gui_editor) end),
@@ -688,3 +686,23 @@ client.connect_signal("focus",
     end)
 client.connect_signal("unfocus", function(c) c.border_color = beautiful.border_normal end)
 -- }}}
+--
+run_once("redshift")
+run_once("~/.config/scripts/wallpaper slideshow","wallpaper") -- wallpaper changer
+--run_once("xset","m 0 0") -- disable mouse acceleration
+run_once("xset -b") -- disable hardware beep
+run_once("xautolock -detectsleep -time 30 -locker \"i3lock-fancy -gp\"") -- desktop locker
+run_once("xmodmap ~/.Xmodmap") -- map ctrl to mod
+run_once("setxkbmap option ctrl:nocaps") -- map capslock to ctrl
+run_once("/usr/lib/polkit-gnome/polkit-gnome-authentication-agent-1") -- Authentication agent (for mounting)
+--startup services/daemons
+--run_once({ "deluge"})
+run_once("mpd")
+run_once("mpdscribble")
+run_once("dropbox start")
+run_once("xbindkeys")
+run_once("numlockx on")
+--startup programs
+run_once("firefox")
+run_once("env STEAM_RUNTIME=0 steam","steam")
+run_once("nulloy")

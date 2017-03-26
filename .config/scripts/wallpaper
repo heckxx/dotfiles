@@ -146,7 +146,7 @@ function change {
   dirname=$(dirname $background)
 
   #:: Set the background
-  feh --bg-max $background
+  feh --bg-fill $background
 
   #:: Record the current background
   set_current $background
