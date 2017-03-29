@@ -28,10 +28,12 @@ Plug 'SirVer/ultisnips'
 Plug 'honza/vim-snippets'
 Plug 'octol/vim-cpp-enhanced-highlight' " cpp syntax highlighting
 Plug 'junegunn/vim-easy-align'          " easy align
+Plug 'junegunn/fzf', { 'dir': '~/.fzf', 'do': './install --all' }
+Plug 'junegunn/fzf.vim'                     " fuzzy finder
 Plug 'nathanaelkane/vim-indent-guides'
 Plug 'w0rp/ale'
+Plug 'maralla/completor.vim'
 " Plug 'Valloric/YouCompleteMe', { 'do': './install.py --clang-completer --omnisharp-completer' }
-Plug 'ctrlpvim/ctrlp.vim'
 Plug 'irrationalistic/vim-tasks'
 Plug 'lervag/vimtex'
 Plug 'vim-scripts/vim-auto-save'
@@ -142,6 +144,34 @@ let g:auto_save_in_insert_mode = 0
 "
 "__COLORIZER
 "let g:colorizer_auto_filetype='css,html,javascript'
+"
+"__FZF
+" Mapping selecting mappings
+nmap <leader><tab> <plug>(fzf-maps-n)
+xmap <leader><tab> <plug>(fzf-maps-x)
+omap <leader><tab> <plug>(fzf-maps-o)
+" Insert mode completion
+imap <tab>k <plug>(fzf-complete-word)
+imap <tab>f <plug>(fzf-complete-path)
+imap <tab>j <plug>(fzf-complete-file-ag)
+imap <tab>l <plug>(fzf-complete-line)
+" Customize fzf colors to match your color scheme
+let g:fzf_colors =
+\ { 'fg':      ['fg', 'Normal'],
+  \ 'bg':      ['bg', 'Normal'],
+  \ 'hl':      ['fg', 'Comment'],
+  \ 'fg+':     ['fg', 'CursorLine', 'CursorColumn', 'Normal'],
+  \ 'bg+':     ['bg', 'CursorLine', 'CursorColumn'],
+  \ 'hl+':     ['fg', 'Statement'],
+  \ 'info':    ['fg', 'PreProc'],
+  \ 'prompt':  ['fg', 'Conditional'],
+  \ 'pointer': ['fg', 'Exception'],
+  \ 'marker':  ['fg', 'Keyword'],
+  \ 'spinner': ['fg', 'Label'],
+  \ 'header':  ['fg', 'Comment'] }
+" Advanced customization using autoload functions
+inoremap <expr> <c-x><c-k> fzf#vim#complete#word({'left': '15%'})"
+
 "__SYNTASTIC
 "let g:syntastic_cpp_compiler_options = '$(pkg-config gtkmm-3.0 --cflags --libs)'
 "let g:syntastic_c_compiler_options = '$(pkg-config gtk+-3.0 --cflags --libs)'

@@ -152,7 +152,7 @@ theme.mpd = lain.widget.mpd({
             mpdicon:set_image(theme.widget_music)
         else
             artist = "mpd"
-            title  = "stopped"
+            title  = " stopped"
             mpdicon:set_image(theme.widget_music)
         end
 
@@ -288,7 +288,8 @@ function theme.at_screen_connect(s)
 
     -- Tags
     layout = awful.layout.layouts
-    awful.tag(awful.util.tagnames, s, {layout[1], layout[2], layout[3], layout[2], layout[2], layout[4], layout[2], layout[2], layout[2]})
+    awful.tag(awful.util.tagnames, s, {layout[1], layout[2], layout[3], layout[2], layout[3], layout[4], layout[2], layout[2], layout[2]})
+    --                                {max,       browser,   steam,     files,     music,     video,     dev1,      dev2,      system   }
 
     -- Create a promptbox for each screen
     s.mypromptbox = awful.widget.prompt()

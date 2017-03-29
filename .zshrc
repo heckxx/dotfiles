@@ -1,6 +1,5 @@
 # Path to your oh-my-zsh installation.
 export ZSH=/home/edward/.oh-my-zsh
-source /usr/share/doc/pkgfile/command-not-found.zsh
 
 # Set name of the theme to load.
 # Look in ~/.oh-my-zsh/themes/
@@ -46,7 +45,7 @@ COMPLETION_WAITING_DOTS="true"
 # Custom plugins may be added to ~/.oh-my-zsh/custom/plugins/
 # Example format: plugins=(rails git textmate ruby lighthouse)
 # Add wisely, as too many plugins slow down shell startup.
-plugins=(command-not-found git common-aliases git-extras compleat zsh-syntax-highlighting)
+plugins=(command-not-found git common-aliases git-extras fzf-zsh compleat zsh-syntax-highlighting)
 
 # User configuration
 
@@ -58,9 +57,18 @@ export PATH="/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/usr/b
   #[[ ! $TERM =~ screen ]] && [ -z $TMUX ] && exec tmux -2
 #fi
 source $ZSH/oh-my-zsh.sh
+
+
 #
 # fuzzy completion
-zstyle ':completion:*' matcher-list 'r:[[:ascii:]]||[[:ascii:]]=** r:|=* m:{a-z\-}={A-Z\_}'
+[ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
+#zstyle ':completion:*' accept-exact '*(N)'
+#zstyle ':completion:*' use-cache on
+#zstyle ':completion:*' cache-path ~/.zsh/cache
+#zstyle ':completion:*' matcher-list 'r:[[:ascii:]]||[[:ascii:]]=** r:|=* m:{a-z\-}={A-Z\_}'
+
+export FZF_CTRL_T_OPTS="--select-1 --exit-0 --preview '(highlight -O ansi -l {} 2> /dev/null || cat {} || tree -C {}) 2> /dev/null | head -200'"
+export FZF_ALT_C_OPTS="--preview 'tree -C {} | head -200'"
 
 # You may need to manually set your language environment
 # export LANG=en_US.UTF-8
@@ -92,8 +100,8 @@ alias please='sudo $(fc -ln -1)'
 alias rm='rm -I'
 alias variety='~/.config/scripts/wallpaper'
 alias ayylmao='figlet ayylmao'
-alias nemo='nemo --no-desktop'
 alias git='hub'
+alias search='ag --nobreak --nonumbers --noheading . | fzf'
 
 export VISUAL="vim"
 export EDITOR="vim"
@@ -103,3 +111,5 @@ export STEAM_RUNTIME=0
 
 trap "~/.config/scripts/colorshift.sh < ~/.Xcolors" USR1
 ~/git/projects/todo/todo.py
+
+

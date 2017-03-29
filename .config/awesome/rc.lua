@@ -375,12 +375,14 @@ globalkeys = awful.util.table.join(
               {description = "dropdown terminal", group = "other"}),
 
     -- Widgets popups
+    --[[
     awful.key({ altkey, }, "c", function () lain.widget.calendar.show(7) end,
               {description = "show calendar", group = "widgets"}),
     awful.key({ altkey, }, "h", function () if beautiful.fs then beautiful.fs.show(7) end end,
               {description = "show fs", group = "widgets"}),
     awful.key({ altkey, }, "w", function () if beautiful.weather then beautiful.weather.show(7) end end,
               {description = "show weather", group = "widgets"}),
+    ]]
 
     awful.key({ }, "XF86MonBrightnessDown", function () awful.spawn.with_shell("xbacklight -dec 15") end),
     awful.key({ }, "XF86MonBrightnessUp", function () awful.spawn.with_shell("xbacklight -inc 15") end),
@@ -597,6 +599,8 @@ awful.rules.rules = {
     { rule = { class = "Firefox" },
       properties = { screen = 1, tag = screen[1].tags[2] } },
 
+    { rule = { instance = "Binding of Isaac: Afterbirth+"},
+          properties = { tag = screen[1].tags[1] } },
     { rule = { class = "Gimp", role = "gimp-image-window" },
           properties = { maximized = true } },
 }
