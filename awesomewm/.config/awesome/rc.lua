@@ -595,11 +595,16 @@ awful.rules.rules = {
     { rule_any = { type = { "dialog", "normal" } },
       properties = { titlebars_enabled = false } },
 
-    -- Set Firefox to always map on the first tag on screen 1.
     { rule = { class = "Firefox" },
       properties = { screen = 1, tag = screen[1].tags[2] } },
 
-    { rule = { instance = "Binding of Isaac: Afterbirth+"},
+    { rule = { class = "Steam"},
+          properties = { tag = screen[1].tags[3] } },
+    { rule = { class = "Deluge"},
+          properties = { tag = screen[1].tags[4] } },
+    { rule = { class = "Nulloy"},
+          properties = { tag = screen[1].tags[5] } },
+    { rule = { class = "Binding of Isaac: Afterbirth+"},
           properties = { tag = screen[1].tags[1] } },
     { rule = { class = "Gimp", role = "gimp-image-window" },
           properties = { maximized = true } },
@@ -700,7 +705,7 @@ run_once("xmodmap ~/.Xmodmap") -- map ctrl to mod
 run_once("setxkbmap option ctrl:nocaps") -- map capslock to ctrl
 run_once("/usr/lib/polkit-gnome/polkit-gnome-authentication-agent-1") -- Authentication agent (for mounting)
 --startup services/daemons
---run_once({ "deluge"})
+run_once("deluge")
 run_once("mpd")
 run_once("mpdscribble")
 run_once("dropbox start")

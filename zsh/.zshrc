@@ -109,6 +109,7 @@ alias variety='~/.config/scripts/wallpaper'
 alias ayylmao='figlet ayylmao'
 alias git='hub'
 alias search='ag --nobreak --nonumbers --noheading . | fzf'
+alias searchh='ag --hidden --nobreak --nonumbers --noheading . | fzf'
 
 export VISUAL="vim"
 export EDITOR="vim"

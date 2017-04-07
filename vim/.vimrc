@@ -32,11 +32,11 @@ Plug 'junegunn/fzf', { 'dir': '~/.fzf', 'do': './install --all' }
 Plug 'junegunn/fzf.vim'                     " fuzzy finder
 Plug 'nathanaelkane/vim-indent-guides'
 Plug 'w0rp/ale'
-Plug 'maralla/completor.vim'
+" Plug 'maralla/completor.vim'
 " Plug 'Valloric/YouCompleteMe', { 'do': './install.py --clang-completer --omnisharp-completer' }
 Plug 'irrationalistic/vim-tasks'
 Plug 'lervag/vimtex'
-Plug 'vim-scripts/vim-auto-save'
+Plug '907th/vim-auto-save'
 Plug 'nanotech/jellybeans.vim'
 Plug 'beloglazov/vim-online-thesaurus'
 " Plug 'chrisbra/Colorizer'
@@ -84,18 +84,6 @@ cmap w!! w !sudo tee > /dev/null %
 set hidden
 let g:netrw_liststyle=3
 
-"__KEYBINDINGS
-" split navigation ctrl+direction
-nnoremap <c-j> <c-w><c-j>
-nnoremap <c-h> <c-w><c-h>
-nnoremap <c-l> <c-w><c-l>
-nnoremap <c-k> <c-w><c-k>
-nnoremap j gj
-nnoremap k gk
-inoremap jk <esc>
-nmap <space> <leader>
-nmap <leader>s 1z=
-
 "_PLUGIN
 
 "__AIRLINE
@@ -141,20 +129,11 @@ let g:auto_save = 0
 let g:auto_save_no_updatetime = 1
 let g:auto_save_in_insert_mode = 0
 "__CTRLP
-"
+
 "__COLORIZER
 "let g:colorizer_auto_filetype='css,html,javascript'
-"
+
 "__FZF
-" Mapping selecting mappings
-nmap <leader><tab> <plug>(fzf-maps-n)
-xmap <leader><tab> <plug>(fzf-maps-x)
-omap <leader><tab> <plug>(fzf-maps-o)
-" Insert mode completion
-imap <tab>k <plug>(fzf-complete-word)
-imap <tab>f <plug>(fzf-complete-path)
-imap <tab>j <plug>(fzf-complete-file-ag)
-imap <tab>l <plug>(fzf-complete-line)
 " Customize fzf colors to match your color scheme
 let g:fzf_colors =
 \ { 'fg':      ['fg', 'Normal'],
@@ -170,7 +149,7 @@ let g:fzf_colors =
   \ 'spinner': ['fg', 'Label'],
   \ 'header':  ['fg', 'Comment'] }
 " Advanced customization using autoload functions
-inoremap <expr> <c-x><c-k> fzf#vim#complete#word({'left': '15%'})"
+inoremap <expr> <c-x><c-k> fzf#vim#complete#word({'left': '14%'})"
 
 "__SYNTASTIC
 "let g:syntastic_cpp_compiler_options = '$(pkg-config gtkmm-3.0 --cflags --libs)'
@@ -191,7 +170,33 @@ endif
 let g:undotree_WindowLayout = 2
 let g:undotree_SetFocusWhenToggle = 1
 
-"_PLUGINKEYBINDINGS
+"__KEYBINDINGS
+" essential
+nmap <space> <leader>
+nnoremap j gj
+nnoremap k gk
+inoremap jk <esc>
+" split navigation ctrl+direction
+nnoremap <c-j> <c-w><c-j>
+nnoremap <c-h> <c-w><c-h>
+nnoremap <c-l> <c-w><c-l>
+nnoremap <c-k> <c-w><c-k>
+" FZF searching
+" Mapping selecting mappings
+nmap <leader><tab> <plug>(fzf-maps-n)
+xmap <leader><tab> <plug>(fzf-maps-x)
+omap <leader><tab> <plug>(fzf-maps-o)
+" Insert mode completion
+imap <tab>k <plug>(fzf-complete-word)
+imap <tab>f <plug>(fzf-complete-path)
+imap <tab>j <plug>(fzf-complete-file-ag)
+imap <tab>l <plug>(fzf-complete-line)
+nnoremap ? :Lines<Enter>
+nnoremap <leader>b :Buffers<Enter>
+" Add selected word to dictionary
+nmap <leader>s 1z=
+" use gundo
 nnoremap <leader>u :UndotreeToggle<CR>
+" use easyalign
 vmap <Enter> <Plug>(EasyAlign)
 nmap <Leader>a <Plug>(EasyAlign)
