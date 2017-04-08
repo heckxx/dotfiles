@@ -108,8 +108,8 @@ alias rm='rm -I'
 alias variety='~/.config/scripts/wallpaper'
 alias ayylmao='figlet ayylmao'
 alias git='hub'
-alias search='ag --nobreak --nonumbers --noheading . | fzf'
-alias searchh='ag --hidden --nobreak --nonumbers --noheading . | fzf'
+alias search='rg --no-line-number --no-heading . | fzf'
+alias searchh='rg --hidden --no-line-number --no-heading . | fzf'
 
 export VISUAL="vim"
 export EDITOR="vim"
