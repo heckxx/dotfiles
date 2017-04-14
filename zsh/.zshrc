@@ -120,4 +120,5 @@ export STEAM_RUNTIME=0
 trap "~/.config/scripts/colorshift.sh < ~/.Xcolors" USR1
 ~/git/projects/todo/todo.py
 
-
+# fix NTFS directory colors being unreadable in ls
+eval $(dircolors -b .dircolors)
