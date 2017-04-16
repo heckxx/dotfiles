@@ -26,6 +26,7 @@ Plug 'tpope/vim-surround'
 Plug 'mbbill/undotree'
 Plug 'SirVer/ultisnips'
 Plug 'honza/vim-snippets'
+Plug 'sheerun/vim-polyglot'
 Plug 'octol/vim-cpp-enhanced-highlight' " cpp syntax highlighting
 Plug 'junegunn/vim-easy-align'          " easy align
 Plug 'junegunn/fzf', { 'dir': '~/.fzf', 'do': './install --all' }

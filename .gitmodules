@@ -4,3 +4,18 @@
 [submodule "awesomewm/.config/awesome/lain"]
 	path = awesomewm/.config/awesome/lain
 	url = https://github.com/copycat-killer/lain.git
+[submodule "desktop_awesomewm/.config/awesome/lain"]
+	path = desktop_awesomewm/.config/awesome/lain
+	url = git://github.com/copycat-killer/lain.git
+[submodule "desktop_awesomewm/.config/awesome/awesome-freedesktop"]
+	path = desktop_awesomewm/.config/awesome/awesome-freedesktop
+	url = https://github.com/copycat-killer/awesome-freedesktop.git
+[submodule "desktop_awesomewm/.config/awesome/freedesktop"]
+	path = desktop_awesomewm/.config/awesome/freedesktop
+	url = https://github.com/copycat-killer/awesome-freedesktop.git
+[submodule "laptop_awesomewm/.config/awesome/freedesktop"]
+	path = laptop_awesomewm/.config/awesome/freedesktop
+	url = https://github.com/copycat-killer/awesome-freedesktop.git
+[submodule "laptop_awesomewm/.config/awesome/lain"]
+	path = laptop_awesomewm/.config/awesome/lain
+	url = git://github.com/copycat-killer/lain.git
