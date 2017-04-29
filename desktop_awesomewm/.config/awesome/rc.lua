@@ -109,7 +109,7 @@ awful.layout.layouts = {
     --lain.layout.termfair.center,
 }
 awful.util.taglist_buttons = awful.util.table.join(
-                    awful.button({ }, 1, function(t) t:view_only() end),
+                    -- awful.button({ }, 1, function(t) t:view_only() end),
                     awful.button({ modkey }, 1, function(t)
                                               if client.focus then
                                                   client.focus:move_to_tag(t)
@@ -215,9 +215,11 @@ awful.screen.connect_for_each_screen(function(s) beautiful.at_screen_connect(s) 
 
 -- {{{ Mouse bindings
 root.buttons(awful.util.table.join(
-    awful.button({ }, 3, function () awful.util.mymainmenu:toggle() end),
+    awful.button({ }, 3, function () awful.util.mymainmenu:toggle() end)
+    --[[,
     awful.button({ }, 4, awful.tag.viewnext),
     awful.button({ }, 5, awful.tag.viewprev)
+    ]]
 ))
 -- }}}
 
@@ -233,12 +235,14 @@ globalkeys = awful.util.table.join(
     awful.key({ modkey,           }, "s",      hotkeys_popup.show_help,
               {description="show help", group="awesome"}),
     -- Tag browsing
+    --[[
     awful.key({ modkey,           }, "Left",   awful.tag.viewprev,
               {description = "view previous", group = "tag"}),
     awful.key({ modkey,           }, "Right",  awful.tag.viewnext,
               {description = "view next", group = "tag"}),
     awful.key({ modkey,           }, "Escape", awful.tag.history.restore,
               {description = "go back", group = "tag"}),
+    ]]
 
     -- Non-empty tag browsing
     --[[
