@@ -1,0 +1,1 @@
+/home/edward/.vimrc

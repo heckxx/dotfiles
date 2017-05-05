@@ -1,7 +1,10 @@
 " _VIMPLUG
-" _SYNTAX
+" _SETTINGS
+" __SYNTAX
+" __VIM_SPECIFIC
+" __NVIM_SPECIFIC
+" __OTHER
 " __FILE_SPECIFIC
-" _PROGRAM
 " _PLUGIN
 " __AIRLINE
 " __ALE
@@ -15,38 +18,35 @@
 " _KEYBINDINGS
 " _PLUGINKEYBINDINGS
 
-set nocompatible              " be iMproved, required
-" required
-syntax enable
-colorscheme jellybeans
 
 "_VIMPLUG
 " Plugin 'gmarik/Vundle.vim'
 call plug#begin('~/.vim/plugins')
-Plug 'vim-airline/vim-airline'
-Plug 'tpope/vim-sensible'                   " Sensible vimrc
-Plug 'tpope/vim-surround'
-Plug 'mbbill/undotree'
-Plug 'SirVer/ultisnips'
+Plug '907th/vim-auto-save'
+Plug 'beloglazov/vim-online-thesaurus'
+Plug 'ervandew/supertab'
 Plug 'honza/vim-snippets'
-Plug 'sheerun/vim-polyglot'
-Plug 'octol/vim-cpp-enhanced-highlight' " cpp syntax highlighting
-Plug 'junegunn/vim-easy-align'          " easy align
+Plug 'irrationalistic/vim-tasks'
 Plug 'junegunn/fzf', { 'dir': '~/.fzf', 'do': './install --all' }
 Plug 'junegunn/fzf.vim'                     " fuzzy finder
-Plug 'nathanaelkane/vim-indent-guides'
-Plug 'w0rp/ale'
-" Plug 'maralla/completor.vim'
-" Plug 'Valloric/YouCompleteMe', { 'do': './install.py --clang-completer --omnisharp-completer' }
-Plug 'irrationalistic/vim-tasks'
+Plug 'junegunn/vim-easy-align'          " easy align
 Plug 'lervag/vimtex'
-Plug '907th/vim-auto-save'
+Plug 'mbbill/undotree'
 Plug 'nanotech/jellybeans.vim'
-Plug 'beloglazov/vim-online-thesaurus'
+Plug 'nathanaelkane/vim-indent-guides'
+Plug 'octol/vim-cpp-enhanced-highlight' " cpp syntax highlighting
+Plug 'sheerun/vim-polyglot'
+Plug 'SirVer/ultisnips'
 Plug 'terryma/vim-multiple-cursors'
+Plug 'tpope/vim-surround'
+Plug 'vim-airline/vim-airline'
+Plug 'w0rp/ale'
 Plug 'yuttie/comfortable-motion.vim'
-" Plug 'chrisbra/Colorizer'
-" Plugin 'ardagnir/vimbed'                  " For pterosaur
+if !has('nvim')
+    Plug 'tpope/vim-sensible'
+elseif has('nvim')
+    Plug 'Shougo/deoplete.nvim', { 'do': ':UpdateRemotePlugins' }
+endif
 call plug#end()
 
 autocmd VimEnter *
@@ -54,28 +54,41 @@ autocmd VimEnter *
   \|   PlugInstall --sync | q
   \| endif
 
-"_SYNTAX
-" transparent background
+"_SETTINGS
+"__VIM_SPECIFIC
+" vim defaults (nvim already has these by default)
+if !has('nvim')
+    syntax enable
+    set showcmd
+    set smarttab
+    set hlsearch
+    " centralized directory for backup/swap files
+    set backupdir=~/.vim/backup//
+    set directory=~/.vim/swap//
+endif
+let g:netrw_liststyle=3
+"__NVIM_SPECIFIC
+" nothing here yet!
+"__OTHER
+" colorscheme with transparant backgrount
+colorscheme jellybeans
 hi NonText ctermbg=NONE
 hi Normal ctermbg=NONE
-" Mark over 80 lines
+" Mark over 80 char lines
 highlight ColorColumn ctermbg=darkgrey
 " set colorcolumn=81
 autocmd FileType python call matchadd('ColorColumn','\%81v',100)
 " Indent settings
-set ts=4 sw=4 sts=4 et   "Spaces
+" if i ever want to switch to disgusting tabs:
+" set ts=4 sw=4 sts=0 noet
+set ts=4 sw=4 sts=4 et
 set linebreak
-" set ts=4 sw=4 sts=0 noet "Tabs
-set list listchars=tab:▸\ ,trail:·
-set smarttab
-set modeline
+set list listchars=tab:>\ ,trail:·,nbsp:+
 set visualbell
 set number relativenumber numberwidth=2
-set showcmd
 set ignorecase smartcase
-set hlsearch
-set splitbelow
-set splitright
+set splitbelow splitright
+set hidden
 "__FILE_SPECIFIC
 " spellcheck for notes
 autocmd BufRead,BufNewFile notes setlocal spell spelllang=en_us spellcapcheck=''
@@ -85,17 +98,7 @@ autocmd FileType SIGKILL inoremap E ▘
 autocmd FileType SIGKILL inoremap O ⊙
 autocmd FileType SIGKILL inoremap I i
 
-"_PROGRAM
-" centralized directory for backup/swap files
-set backupdir=~/.vim/backup//
-set directory=~/.vim/swap//
-" Save as sudo when vim is not root
-cmap w!! w !sudo tee > /dev/null %
-set hidden
-let g:netrw_liststyle=3
-
 "_PLUGIN
-
 "__AIRLINE
 let g:airline#extensions#tabline#enabled=1
 let g:airline#extensions#syntastic#enabled=1
@@ -138,10 +141,11 @@ let g:ale_lint_delay = 500
 let g:auto_save = 0
 let g:auto_save_no_updatetime = 1
 let g:auto_save_in_insert_mode = 0
-"__CTRLP
 
-"__COLORIZER
-"let g:colorizer_auto_filetype='css,html,javascript'
+"__DEOPLETE
+if has('nvim')
+    let g:deoplete#enable_at_startup = 1
+endif
 
 "__FZF
 " Customize fzf colors to match your color scheme
@@ -191,6 +195,8 @@ nmap <space> <leader>
 nnoremap j gj
 nnoremap k gk
 inoremap jk <esc>
+" Save as sudo when vim is not root
+cmap w!! w !sudo tee > /dev/null %
 " multiple cursors
 let g:multi_cursor_insert_maps={'j':1}
 " split navigation ctrl+direction
@@ -204,10 +210,10 @@ nmap <leader><tab> <plug>(fzf-maps-n)
 xmap <leader><tab> <plug>(fzf-maps-x)
 omap <leader><tab> <plug>(fzf-maps-o)
 " Insert mode completion
-imap <tab>k <plug>(fzf-complete-word)
-imap <tab>f <plug>(fzf-complete-path)
-imap <tab>j <plug>(fzf-complete-file-ag)
-imap <tab>l <plug>(fzf-complete-line)
+"imap <tab>k <plug>(fzf-complete-word)
+"imap <tab>f <plug>(fzf-complete-path)
+"imap <tab>j <plug>(fzf-complete-file-ag)
+"imap <tab>l <plug>(fzf-complete-line)
 nnoremap ? :Lines<Enter>
 nnoremap <leader>b :Buffers<Enter>
 " Add selected word to dictionary
@@ -217,4 +223,3 @@ nnoremap <leader>u :UndotreeToggle<CR>
 " use easyalign
 vmap <Enter> <Plug>(EasyAlign)
 "nmap <Leader>a <Plug>(EasyAlign)
-

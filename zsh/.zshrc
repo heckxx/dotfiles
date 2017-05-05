@@ -101,7 +101,7 @@ export FZF_ALT_C_OPTS="--preview 'tree -C {} | head -200'"
 # Example aliases
 alias zshconfig="mate ~/.zshrc"
 alias ohmyzsh="mate ~/.oh-my-zsh"
-alias :e="vim"
+alias :e="nvim"
 alias :q="exit"
 alias please='sudo $(fc -ln -1)'
 alias rm='rm -I'
