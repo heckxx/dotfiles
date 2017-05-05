@@ -2,14 +2,17 @@
 " _SYNTAX
 " __FILE_SPECIFIC
 " _PROGRAM
-" __KEYBINDINGS
 " _PLUGIN
 " __AIRLINE
+" __ALE
 " __AUTOSAVE
+" __FZF
+" __SMOOTH_SCROLL
 " __SYNTASTIC
 " __TASKS
 " __ULTISNIPS
 " __UNDOTREE
+" _KEYBINDINGS
 " _PLUGINKEYBINDINGS
 
 set nocompatible              " be iMproved, required
@@ -40,10 +43,16 @@ Plug 'lervag/vimtex'
 Plug '907th/vim-auto-save'
 Plug 'nanotech/jellybeans.vim'
 Plug 'beloglazov/vim-online-thesaurus'
+Plug 'terryma/vim-multiple-cursors'
+Plug 'yuttie/comfortable-motion.vim'
 " Plug 'chrisbra/Colorizer'
 " Plugin 'ardagnir/vimbed'                  " For pterosaur
 call plug#end()
 
+autocmd VimEnter *
+  \  if len(filter(values(g:plugs), '!isdirectory(v:val.dir)'))
+  \|   PlugInstall --sync | q
+  \| endif
 
 "_SYNTAX
 " transparent background
@@ -152,6 +161,10 @@ let g:fzf_colors =
 " Advanced customization using autoload functions
 inoremap <expr> <c-x><c-k> fzf#vim#complete#word({'left': '14%'})"
 
+"__SMOOTH_SCROLL
+let g:comfortable_motion_friction = 100.0
+let g:comfortable_motion_air_drag = 2.0
+
 "__SYNTASTIC
 "let g:syntastic_cpp_compiler_options = '$(pkg-config gtkmm-3.0 --cflags --libs)'
 "let g:syntastic_c_compiler_options = '$(pkg-config gtk+-3.0 --cflags --libs)'
@@ -163,6 +176,7 @@ let g:UltiSnipsJumpForwardTrigger="<c-b>"
 let g:UltiSnipsJumpBackwardTrigger="<c-z>"
 " If you want :UltiSnipsEdit to split your window.
 let g:UltiSnipsEditSplit="vertical"
+
 "__UNDOTREE
 if has("persistent_undo")
     set undodir=~/.vim/undo/
@@ -171,12 +185,14 @@ endif
 let g:undotree_WindowLayout = 2
 let g:undotree_SetFocusWhenToggle = 1
 
-"__KEYBINDINGS
+"_KEYBINDINGS
 " essential
 nmap <space> <leader>
 nnoremap j gj
 nnoremap k gk
 inoremap jk <esc>
+" multiple cursors
+let g:multi_cursor_insert_maps={'j':1}
 " split navigation ctrl+direction
 nnoremap <c-j> <c-w><c-j>
 nnoremap <c-h> <c-w><c-h>
@@ -200,4 +216,5 @@ nmap <leader>s 1z=
 nnoremap <leader>u :UndotreeToggle<CR>
 " use easyalign
 vmap <Enter> <Plug>(EasyAlign)
-nmap <Leader>a <Plug>(EasyAlign)
+"nmap <Leader>a <Plug>(EasyAlign)
+

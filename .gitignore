@@ -9,4 +9,6 @@ vim/.vim/swap/**
 vim/.vim/backup/**
 vim/.vim/undo/**
 vim/.vim/plugins/**
+vim/.vim/autoload/**
+vim/.vim/.netrwhist
 vimperator/.vimperator/info/default/**
