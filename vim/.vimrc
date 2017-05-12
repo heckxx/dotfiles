@@ -78,6 +78,7 @@ hi Normal ctermbg=NONE
 highlight ColorColumn ctermbg=darkgrey
 " set colorcolumn=81
 autocmd FileType python call matchadd('ColorColumn','\%81v',100)
+autocmd FileType python set textwidth=80
 " Indent settings
 " if i ever want to switch to disgusting tabs:
 " set ts=4 sw=4 sts=0 noet
@@ -89,6 +90,11 @@ set number relativenumber numberwidth=2
 set ignorecase smartcase
 set splitbelow splitright
 set hidden
+" highlight TODO for every filetype
+augroup HiglightTODO
+    autocmd!
+    autocmd WinEnter,VimEnter * :silent! call matchadd('Todo', 'TODO\|FIXME\|HACK\|DONE', -1)
+augroup END
 "__FILE_SPECIFIC
 " spellcheck for notes
 autocmd BufRead,BufNewFile notes setlocal spell spelllang=en_us spellcapcheck=''
@@ -165,6 +171,10 @@ let g:fzf_colors =
 " Advanced customization using autoload functions
 inoremap <expr> <c-x><c-k> fzf#vim#complete#word({'left': '14%'})"
 
+"__POLYGLOT
+let g:polyglot_disabled = ['latex']
+
+
 "__SMOOTH_SCROLL
 let g:comfortable_motion_friction = 100.0
 let g:comfortable_motion_air_drag = 2.0
@@ -223,3 +233,8 @@ nnoremap <leader>u :UndotreeToggle<CR>
 " use easyalign
 vmap <Enter> <Plug>(EasyAlign)
 "nmap <Leader>a <Plug>(EasyAlign)
+" neovim terminal escape
+if has('nvim')
+    tnoremap <Esc> <C-\><C-n>
+    tnoremap jk <C-\><C-n>
+endif
