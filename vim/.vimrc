@@ -42,6 +42,7 @@ Plug 'tpope/vim-surround'
 Plug 'vim-airline/vim-airline'
 Plug 'w0rp/ale'
 Plug 'yuttie/comfortable-motion.vim'
+Plug 'vimwiki/vimwiki'
 if !has('nvim')
     Plug 'tpope/vim-sensible'
 elseif has('nvim')

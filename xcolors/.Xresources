@@ -16,11 +16,11 @@ URxvt*.foreground: #00DD00
 URxvt.iconFile: /usr/share/icons/Clarity/scalable/apps/terminal.svg
 
 !urxvt fonts: 
-URxvt*font: xft:DejaVu Sans Mono for Powerline:antialias=true:pixelsize=12
-URxvt*boldFont: xft:DejaVu Sans Mono for Powerline:style=bold:antialias=true:pixelsize=12
-URxvt*italicFont: xft:DejaVu Sans Mono for Powerline:style=italic:antialias=true:pixelsize=12
-URxvt*boldItalicFont: xft:DejaVu Sans Mono for Powerline:style=bolditalic:antialias=true:pixelsize=12
-URxvt*letterSpace: -2
+URxvt.font: xft:Hack:antialias=true:pixelsize=12
+URxvt.boldFont: xft:Hack:bold:antialias=true:pixelsize=12
+URxvt.italicFont: xft:Hack:italic:antialias=true:pixelsize=12
+URxvt.boldItalicFont: xft:Hack:bolditalic:antialias=true:pixelsize=12
+URxvt.letterSpace: -2
 
 !urxvt extensions:
 URxvt.perl-ext-common:  default,matcher,clipboard
