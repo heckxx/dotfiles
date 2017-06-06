@@ -15,6 +15,7 @@
 " __TASKS
 " __ULTISNIPS
 " __UNDOTREE
+" __VIMWIKI
 " _KEYBINDINGS
 " _PLUGINKEYBINDINGS
 
@@ -199,6 +200,18 @@ if has("persistent_undo")
 endif
 let g:undotree_WindowLayout = 2
 let g:undotree_SetFocusWhenToggle = 1
+
+"__VIMWIKI
+let wiki = [{}]
+if hostname() == 'SHODAN'
+    " laptop
+    let wiki[0].path = '~/Dropbox/vimwiki'
+elseif hostname() == 'VISION'
+    " desktop
+    let wiki[0].path = '/mnt/Stuff/Dropbox/vimwiki'
+endif
+let wiki[0].nested_syntaxes = {'python': 'python', 'c++': 'cpp', 'java': 'java'}
+let g:vimwiki_list = wiki
 
 "_KEYBINDINGS
 " essential

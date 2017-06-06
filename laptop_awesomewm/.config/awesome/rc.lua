@@ -81,7 +81,7 @@ local editor       = os.getenv("EDITOR") or "vim" or "vi"
 local gui_editor   = "gvim"
 local browser      = "firefox"
 
-beautiful.useless_gap = 3
+beautiful.useless_gap = 2
 awful.util.terminal = terminal
 awful.util.tagnames = { "", "🌎", "🚀", "📁", "♫", "🎬", "⚒", "💼", "💻"}
 awful.layout.layouts = {
@@ -415,28 +415,28 @@ globalkeys = awful.util.table.join(
         end,
               {description = "mute", group = "audio"}),
 
-    -- MPD control
+    -- playerctl control
     awful.key({}, "#172",
         function ()
-            awful.spawn.with_shell("mpc toggle")
+            awful.spawn.with_shell("playerctl play-pause")
             beautiful.mpd.update()
         end,
               {description = "play/pause", group = "audio"}),
     awful.key({}, "#174",
         function ()
-            awful.spawn.with_shell("mpc stop")
+            awful.spawn.with_shell("playerctl stop")
             beautiful.mpd.update()
         end,
               {description = "stop", group = "audio"}),
     awful.key({}, "#173",
         function ()
-            awful.spawn.with_shell("mpc prev")
+            awful.spawn.with_shell("playerctl previous")
             beautiful.mpd.update()
         end,
               {description = "prev track", group = "audio"}),
     awful.key({}, "#171",
         function ()
-            awful.spawn.with_shell("mpc next")
+            awful.spawn.with_shell("playerctl next")
             beautiful.mpd.update()
         end,
               {description = "next track", group = "audio"}),
@@ -612,7 +612,11 @@ awful.rules.rules = {
           properties = { tag = screen[1].tags[3] } },
     { rule = { class = "Deluge"},
           properties = { tag = screen[1].tags[4] } },
+    { rule = { class = "factorio*"},
+          properties = { tag = screen[1].tags[1], maximized = true } },
     { rule = { class = "Nulloy"},
+          properties = { tag = screen[1].tags[5] } },
+    { rule = { class = "spotify*"},
           properties = { tag = screen[1].tags[5] } },
     { rule = { class = "Binding of Isaac: Afterbirth+"},
           properties = { tag = screen[1].tags[1] } },
@@ -715,13 +719,14 @@ run_once("xmodmap ~/.Xmodmap") -- map ctrl to mod
 run_once("setxkbmap option ctrl:nocaps") -- map capslock to ctrl
 run_once("/usr/lib/polkit-gnome/polkit-gnome-authentication-agent-1") -- Authentication agent (for mounting)
 --startup services/daemons
-run_once("deluge")
-run_once("mpd")
-run_once("mpdscribble")
+--run_once("deluge")
+--run_once("mpd")
+--run_once("mpdscribble")
 run_once("dropbox start")
 run_once("xbindkeys")
 run_once("numlockx on")
 --startup programs
+--run_once("nulloy")
+run_once("spotify")
 run_once("firefox")
 run_once("env STEAM_RUNTIME=0 steam","steam")
-run_once("nulloy")
