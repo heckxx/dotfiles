@@ -79,12 +79,14 @@ hi Normal ctermbg=NONE
 " Mark over 80 char lines
 highlight ColorColumn ctermbg=darkgrey
 " set colorcolumn=81
-autocmd FileType python call matchadd('ColorColumn','\%81v',100)
-autocmd FileType python set textwidth=80
+" autocmd FileType python call matchadd('ColorColumn','\%81v',100)
+"autocmd FileType python set textwidth=80
+"autocmd FileType python set colorcolumn=80
 " Indent settings
 " if i ever want to switch to disgusting tabs:
 " set ts=4 sw=4 sts=0 noet
-set ts=4 sw=4 sts=4 et
+" set ts=4 sw=4 sts=4 et
+set ts=2 sw=2 sts=2 et
 set linebreak
 set list listchars=tab:>\ ,trail:·,nbsp:+
 set visualbell
@@ -100,6 +102,9 @@ augroup END
 "__FILE_SPECIFIC
 " spellcheck for notes
 autocmd BufRead,BufNewFile notes setlocal spell spelllang=en_us spellcapcheck=''
+" vertical help window
+autocmd FileType help wincmd L
+" i can't input backticks lol
 autocmd FileType tex inoremap " ``
 autocmd FileType tex setlocal spell spellcapcheck=''
 autocmd FileType SIGKILL inoremap E ▘
@@ -140,7 +145,7 @@ let g:airline_symbols.linenr = ''
 call airline#parts#define_function('ALE', 'ALEGetStatusLine')
 call airline#parts#define_condition('ALE', 'exists("*ALEGetStatusLine")')
 let g:airline_section_error = airline#section#create_right(['ALE'])
-" let g:jellybeans_background_color_256='NONE'
+let g:jellybeans_background_color_256='NONE'
 
 "__ALE
 let g:ale_lint_delay = 500
