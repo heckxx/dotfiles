@@ -116,6 +116,7 @@ export EDITOR="vim"
 export QT_STYLE_OVERRIDE=GTK+
 export STEAM_RUNTIME=0
 
+setopt HIST_IGNORE_SPACE
 
 trap "~/.config/scripts/colorshift.sh < ~/.Xcolors" USR1
 ~/git/projects/todo/todo.py

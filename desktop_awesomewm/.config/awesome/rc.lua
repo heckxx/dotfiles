@@ -618,6 +618,8 @@ awful.rules.rules = {
           properties = { tag = screen[1].tags[1], maximized = true } },
     { rule = { class = "hexchat"},
           properties = { tag = screen[1].tags[9] } },
+    { rule = { class = "Slay the Spire"},
+          properties = { tag = screen[1].tags[1] } },
     { rule = { class = "Binding of Isaac: Afterbirth+"},
           properties = { tag = screen[1].tags[1] } },
     { rule = { class = "Gimp", role = "gimp-image-window" },
@@ -726,7 +728,7 @@ run_once("dropbox start")
 run_once("xbindkeys")
 run_once("numlockx on")
 --startup programs
-run_once("firefox")
+run_once("firefox-developer-edition")
 run_once("hexchat")
 run_once("env STEAM_RUNTIME=0 steam","steam")
 run_once("nulloy")

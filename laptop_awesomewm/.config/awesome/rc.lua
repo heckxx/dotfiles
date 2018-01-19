@@ -618,6 +618,8 @@ awful.rules.rules = {
           properties = { tag = screen[1].tags[5] } },
     { rule = { class = "spotify*"},
           properties = { tag = screen[1].tags[5] } },
+    { rule = { class = "Slay the Spire"},
+          properties = { tag = screen[1].tags[1] } },
     { rule = { class = "Binding of Isaac: Afterbirth+"},
           properties = { tag = screen[1].tags[1] } },
     { rule = { class = "Gimp", role = "gimp-image-window" },

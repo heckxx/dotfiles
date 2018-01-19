@@ -110,6 +110,8 @@ autocmd FileType tex setlocal spell spellcapcheck=''
 autocmd FileType SIGKILL inoremap E ▘
 autocmd FileType SIGKILL inoremap O ⊙
 autocmd FileType SIGKILL inoremap I i
+" speed up macros
+set lazyredraw
 
 "_PLUGIN
 "__AIRLINE
@@ -220,12 +222,13 @@ let g:vimwiki_list = wiki
 
 "_KEYBINDINGS
 " essential
-nmap <space> <leader>
+map <space> <leader>
 nnoremap j gj
 nnoremap k gk
+nnoremap Q @@
 inoremap jk <esc>
 " Save as sudo when vim is not root
-cmap w!! w !sudo tee > /dev/null %
+cnoremap w!! w !sudo tee > /dev/null %
 " multiple cursors
 let g:multi_cursor_insert_maps={'j':1}
 " split navigation ctrl+direction
@@ -235,9 +238,9 @@ nnoremap <c-l> <c-w><c-l>
 nnoremap <c-k> <c-w><c-k>
 " FZF searching
 " Mapping selecting mappings
-nmap <leader><tab> <plug>(fzf-maps-n)
-xmap <leader><tab> <plug>(fzf-maps-x)
-omap <leader><tab> <plug>(fzf-maps-o)
+nnoremap <leader><tab> <plug>(fzf-maps-n)
+xnoremap <leader><tab> <plug>(fzf-maps-x)
+onoremap <leader><tab> <plug>(fzf-maps-o)
 " Insert mode completion
 "imap <tab>k <plug>(fzf-complete-word)
 "imap <tab>f <plug>(fzf-complete-path)
@@ -246,11 +249,12 @@ omap <leader><tab> <plug>(fzf-maps-o)
 nnoremap ? :Lines<Enter>
 nnoremap <leader>b :Buffers<Enter>
 " Add selected word to dictionary
-nmap <leader>s 1z=
+nnoremap <leader>s 1z=
+nnoremap <leader>ya :%y+
 " use gundo
 nnoremap <leader>u :UndotreeToggle<CR>
 " use easyalign
-vmap <Enter> <Plug>(EasyAlign)
+vnoremap <Enter> <Plug>(EasyAlign)
 "nmap <Leader>a <Plug>(EasyAlign)
 " neovim terminal escape
 if has('nvim')

@@ -34,7 +34,7 @@ run_once("dropbox start");
 run_once("xbindkeys");
 run_once("numlockx on");
 --startup programs
-run_once("firefox",nil,nil,2);
+run_once("firefox-developer-edition",nil,nil,2);
 run_once("env STEAM_RUNTIME=0 steam");
 run_once("nulloy",nil,nil,2);
 
