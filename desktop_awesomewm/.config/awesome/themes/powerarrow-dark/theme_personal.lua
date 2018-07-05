@@ -2,15 +2,16 @@
 --[[
                                       
      Powerarrow Dark Awesome WM theme 
-     github.com/copycat-killer        
+     github.com/lcpz
                                       
 --]]
 
-local gears = require("gears")
-local lain  = require("lain")
-local awful = require("awful")
-local wibox = require("wibox")
-local os    = { getenv = os.getenv }
+local gears    = require("gears")
+local lain     = require("lain")
+local awful    = require("awful")
+local wibox    = require("wibox")
+local os       = { getenv = os.getenv }
+local my_table = awful.util.table or gears.table -- 4.{0,1} compatibility
 
 local theme                                     = {}
 
@@ -101,17 +102,16 @@ local separators = lain.util.separators
 
 -- Textclock
 local clockicon = wibox.widget.imagebox(theme.widget_clock)
-local clock = lain.widget.watch({
-    timeout  = 60,
-    cmd      = " date +'%a %d %b %R'",
-    settings = function()
-        widget:set_markup(" " .. markup.font(theme.font, output))
+local clock = awful.widget.watch(
+    "date +'%a %d %b %R'", 60,
+    function(widget, stdout)
+        widget:set_markup(" " .. markup.font(theme.font, stdout))
     end
-})
+)
 
 -- Calendar
 theme.cal = lain.widget.calendar({
-    attach_to = { clock.widget },
+    attach_to = { clock},
     notification_preset = {
         font = "xos4 Terminus 10",
         fg   = theme.fg_normal,
@@ -122,7 +122,7 @@ theme.cal = lain.widget.calendar({
 -- Mail IMAP check
 local mailicon = wibox.widget.imagebox(theme.widget_mail)
 --[[ commented because it needs to be set before use
-mailicon:buttons(awful.util.table.join(awful.button({ }, 1, function () awful.spawn(mail) end)))
+mailicon:buttons(my_table.join(awful.button({ }, 1, function () awful.spawn(mail) end)))
 local mail = lain.widget.imap({
     timeout  = 180,
     server   = "server",
@@ -198,7 +198,7 @@ theme.fs = lain.widget.fs({
     options  = "--exclude-type=tmpfs",
     notification_preset = { fg = theme.fg_normal, bg = theme.bg_normal, font = "xos4 Terminus 10" },
     settings = function()
-        widget:set_markup(markup.font(theme.font, " " .. fs_now.used .. "% "))
+        widget:set_markup(markup.font(theme.font, " " .. fs_now["/"].percentage .. "% "))
     end
 })
 
@@ -274,11 +274,8 @@ local arrl_dl = separators.arrow_left(theme.bg_focus, "alpha")
 local arrl_ld = separators.arrow_left("alpha", theme.bg_focus)
 
 function theme.at_screen_connect(s)
-    -- Quake application
-    s.quake = lain.util.quake({
-        app = awful.util.terminal,
-        height = 1
-    })
+    -- Quake application per-screen
+    -- s.quake = lain.util.quake({ app = awful.util.terminal, height = 1 })
 
     -- If wallpaper is a function, call it with the screen
     --[[
@@ -299,7 +296,7 @@ function theme.at_screen_connect(s)
     -- Create an imagebox widget which will contains an icon indicating which layout we're using.
     -- We need one layoutbox per screen.
     s.mylayoutbox = awful.widget.layoutbox(s)
-    s.mylayoutbox:buttons(awful.util.table.join(
+    s.mylayoutbox:buttons(my_table.join(
                            awful.button({ }, 1, function () awful.layout.inc( 1) end),
                            awful.button({ }, 3, function () awful.layout.inc(-1) end),
                            awful.button({ }, 4, function () awful.layout.inc( 1) end),
@@ -357,7 +354,7 @@ function theme.at_screen_connect(s)
             neticon,
             net.widget,
             arrl_ld,
-            wibox.container.background(clock.widget, theme.bg_focus),
+            wibox.container.background(clock, theme.bg_focus),
             arrl_dl,
             s.mylayoutbox,
         },

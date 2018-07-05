@@ -1,5 +1,4 @@
-
---[[
+--[[ vim: ft=lua:
                                        
      Awesome WM configuration template 
      github.com/copycat-killer         
@@ -34,7 +33,6 @@ do
     awesome.connect_signal("debug::error", function (err)
         if in_error then return end
         in_error = true
-
         naughty.notify({ preset = naughty.config.presets.critical,
                          title = "Oops, an error happened!",
                          text = tostring(err) })
@@ -80,6 +78,7 @@ local terminal     = "urxvt" or "xterm"
 local editor       = os.getenv("EDITOR") or "vim" or "vi"
 local gui_editor   = "gvim"
 local browser      = "firefox"
+local quake        = lain.util.quake({ app = terminal, height = 1, followtag = true })
 
 beautiful.useless_gap = 3
 awful.util.terminal = terminal
@@ -379,7 +378,7 @@ globalkeys = awful.util.table.join(
               {description = "restore minimized", group = "client"}),
 
     -- Dropdown application
-    awful.key({}, "`", function () awful.screen.focused().quake:toggle() end,
+    awful.key({}, "`", function () quake:toggle() end,
               {description = "dropdown terminal", group = "other"}),
 
     -- Widgets popups
@@ -606,7 +605,7 @@ awful.rules.rules = {
       properties = { titlebars_enabled = false } },
 
     { rule = { class = "Firefox" },
-      properties = { screen = 1, tag = screen[1].tags[2] } },
+      properties = { tag = screen[1].tags[2] } },
 
     { rule = { class = "Steam"},
           properties = { tag = screen[1].tags[3] } },
