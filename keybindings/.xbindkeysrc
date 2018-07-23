@@ -43,7 +43,7 @@
   control+shift + q
 
 "mpc toggle"
-  b:10
+  control+shift + KP_Divide
 
 # set directly keycode (here control + f with my keyboard)
 #"xterm"

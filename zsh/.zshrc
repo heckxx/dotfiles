@@ -5,7 +5,8 @@ export ZSH=/home/edward/.oh-my-zsh
 # Look in ~/.oh-my-zsh/themes/
 # Optionally, if you set this to "random", it'll load a random theme each
 # time that oh-my-zsh is loaded.
-ZSH_THEME="todo"
+# ZSH_THEME="todo"
+ZSH_THEME="alanpeabody"
 
 # Uncomment the following line to use case-sensitive completion.
 # CASE_SENSITIVE="true" 
@@ -58,7 +59,6 @@ export PATH="/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/usr/b
 #fi
 source $ZSH/oh-my-zsh.sh
 
-
 #
 # fuzzy completion
 [ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
@@ -76,6 +76,9 @@ export FZF_DEFAULT_COMMAND='rg --files --no-ignore --hidden --follow --glob "!.g
 
 export FZF_CTRL_T_OPTS="--select-1 --exit-0 --preview '(highlight -O ansi -l {} 2> /dev/null || cat {} || tree -C {}) 2> /dev/null | head -200'"
 export FZF_ALT_C_OPTS="--preview 'tree -C {} | head -200'"
+
+# Python virtualenvwrapper
+source /usr/sbin/virtualenvwrapper.sh
 
 # You may need to manually set your language environment
 # export LANG=en_US.UTF-8
@@ -118,8 +121,12 @@ export STEAM_RUNTIME=0
 
 setopt HIST_IGNORE_SPACE
 
+# automatically update colorscheme
+~/.config/scripts/colorshift.sh < ~/.Xcolors
 trap "~/.config/scripts/colorshift.sh < ~/.Xcolors" USR1
-~/git/projects/todo/todo.py
+
+#~/git/projects/todo/todo.py
 
 # fix NTFS directory colors being unreadable in ls
 eval $(dircolors -b .dircolors)
+

@@ -65,7 +65,7 @@ local function run_once(cmd, name)
     awful.spawn.with_shell("pgrep -u $USER -x " .. name .. " > /dev/null || (" .. cmd .. ")")
 end
 
-run_once("urxvtd unclutter -root")
+-- run_once("urxvtd unclutter -root")
 run_once("compton -b")
 
 -- }}}
@@ -74,11 +74,11 @@ run_once("compton -b")
 local chosen_theme = "powerarrow-dark"
 local modkey       = "Mod3"
 local altkey       = "Mod1"
-local terminal     = "urxvt" or "xterm"
+local terminal     = "termite" or "urxvt" or "xterm"
 local editor       = os.getenv("EDITOR") or "vim" or "vi"
 local gui_editor   = "gvim"
 local browser      = "firefox"
-local quake        = lain.util.quake({ app = terminal, height = 1, followtag = true })
+local quake        = lain.util.quake({ app = terminal, height = 1, followtag = true, argname = "--name %s" })
 
 beautiful.useless_gap = 3
 awful.util.terminal = terminal
