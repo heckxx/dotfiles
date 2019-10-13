@@ -103,17 +103,18 @@ local separators = lain.util.separators
 -- Textclock
 local clockicon = wibox.widget.imagebox(theme.widget_clock)
 local clock = awful.widget.watch(
-    "date +'%a %d %b %R'", 60,
+    "date +'%a %d %b %I:%M'", 60,
     function(widget, stdout)
         widget:set_markup(" " .. markup.font(theme.font, stdout))
     end
 )
 
 -- Calendar
-theme.cal = lain.widget.calendar({
-    attach_to = { clock},
+theme.cal = lain.widget.cal({
+    attach_to = { clock },
+    followtag = true,
     notification_preset = {
-        font = "xos4 Terminus 10",
+        font = "Monospace 10",
         fg   = theme.fg_normal,
         bg   = theme.bg_normal
     }
