@@ -84,6 +84,14 @@ lain.layout.cascade.tile.extra_padding = 5
 lain.layout.cascade.tile.nmaster       = 5
 lain.layout.cascade.tile.ncol          = 2
 
+-- Set keys
+local keybindings = require("keybindings")
+awful.util.taglist_buttons = keybindings.taglist_buttons
+awful.util.tasklist_buttons = keybindings.tasklist_buttons
+root.buttons(keybindings.global_buttons)
+root.keys(keybindings.global_keys)
+
+-- }}}
 local theme_path = string.format("%s/.config/awesome/themes/%s/theme_personal.lua", os.getenv("HOME"), chosen_theme)
 beautiful.init(theme_path)
 beautiful.useless_gap = vars.useless_gap
@@ -128,11 +136,6 @@ end)
 awful.screen.connect_for_each_screen(function(s) beautiful.at_screen_connect(s) end)
 -- }}}
 
--- Set keys
-local keybindings = require("keybindings")
-root.buttons(keybindings.globalbuttons)
-root.keys(keybindings.globalkeys)
--- }}}
 
 -- {{{ Rules
 -- Rules to apply to new clients (through the "manage" signal).
@@ -143,8 +146,8 @@ awful.rules.rules = {
                      border_color = beautiful.border_normal,
                      focus = awful.client.focus.filter,
                      raise = true,
-                     keys = keybindings.clientkeys,
-                     buttons = keybindings.clientbuttons,
+                     keys = keybindings.client_keys,
+                     buttons = keybindings.client_buttons,
                      screen = awful.screen.preferred,
                      placement = awful.placement.no_overlap+awful.placement.no_offscreen,
                      size_hints_honor = false

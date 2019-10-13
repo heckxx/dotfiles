@@ -8,7 +8,7 @@ function startup(autorun, autorun_apps)
     -- Run pgrep to see if program is running
     local function pgrep(command)
       -- Adapted from https://stackoverflow.com/a/23833013
-      return io.popen('pgrep ' .. command .. ' \necho _$?'):read'*a':match'.*%D(%d+)'+0
+      return io.popen('pgrep -x ' .. command .. ' \necho _$?'):read'*a':match'.*%D(%d+)'+0
     end
 
     for app_index = 1, #autorun_apps do
@@ -67,7 +67,7 @@ startup(true, {
     { cmd = "xbindkeys" },
     { cmd = "numlockx", args = "on" },
     -- startup services/daemons
-    { cmd = "~/.config/scripts/wallpaper", target = "slideshow" }, -- wallpaper changer
+    { cmd = "~/.config/scripts/wallpaper", args = "slideshow" }, -- wallpaper changer
     { cmd = "redshift" },
     { cmd = "qbittorrent" },
     { cmd = "mpd" },
@@ -78,7 +78,6 @@ startup(true, {
     { cmd = "firefox-developer-edition", target = "firefox" },
     { cmd = "hexchat" },
     { cmd = "nulloy" },
-    { cmd = "fire" },
     { cmd = "env STEAM_RUNTIME=0 steam", target = "steam" }
   })
 
