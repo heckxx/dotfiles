@@ -4,6 +4,7 @@ local lain = require("lain");
 local vars = require("vars");
 local hotkeys_popup = require("awful.hotkeys_popup").widget
 local modkey, altkey = vars.modkey, vars.altkey
+local quake= lain.util.quake({ app = terminal, height = 1, followtag = true, argname = "--name %s" })
 
 local keybindings = {}
 -- {{{ Mouse bindings

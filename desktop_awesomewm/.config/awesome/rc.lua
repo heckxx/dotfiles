@@ -46,7 +46,6 @@ end
 local vars = require("vars")
 local chosen_theme, lock, gui_editor, browser = vars.chosen_theme, vars.lock, vars.gui_editor, vars.browser
 local modkey, altkey, terminal, editor = vars.modkey, vars.altkey, vars.terminal, vars.editor
-local quake        = lain.util.quake({ app = terminal, height = 1, followtag = true, argname = "--name %s" })
 
 awful.util.terminal = terminal
 awful.util.tagnames = { "☉", "🌎", "🚀", "📁", "♫", "🎬", "⚒", "💼", "💻"}
