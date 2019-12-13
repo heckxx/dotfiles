@@ -51,6 +51,8 @@ plugins=(command-not-found git common-aliases git-extras fzf-zsh compleat zsh-sy
 # User configuration
 
 export PATH="/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/usr/bin/core_perl"
+export PATH=$PATH:$HOME/bin
+export PATH=$PATH:/mnt/c/Windows/System32
 # export MANPATH="/usr/local/man:$MANPATH"
 
 #### startup tmux
@@ -129,4 +131,4 @@ trap "~/.config/scripts/colorshift.sh < ~/.Xcolors" USR1
 
 # fix NTFS directory colors being unreadable in ls
 eval $(dircolors -b .dircolors)
-
+[ -f ~/.aliases ] && source ~/.aliases || echo "No aliases file found!"
