@@ -258,7 +258,7 @@ nnoremap <leader>ya :%y+
 " use gundo
 nnoremap <leader>u :UndotreeToggle<CR>
 " use easyalign
-vnoremap <Enter> <Plug>(EasyAlign)
+xmap <Enter> <Plug>(EasyAlign)
 "nmap <Leader>a <Plug>(EasyAlign)
 " neovim terminal escape
 if has('nvim')

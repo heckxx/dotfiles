@@ -71,23 +71,38 @@ function expand-alias() {
 }
 zle -N expand-alias
 bindkey -M main ' ' expand-alias
-bindkey '^[[A' history-substring-search-up
-bindkey '^[[B' history-substring-search-down
 export ENHANCD_DISABLE_HOME=1
 export ENHANCD_DISABLE_DOT=1
 export ENHANCD_HOOK_AFTER_CD="l"
+# ctrl + arrow, move by word
+bindkey '^[[1;5C' forward-word
+bindkey '^[[1;5D' backward-word
 
+## History
+HISTFILE="$HOME/.zsh_history"
+setopt extended_history       # Ignore commands with a space in front
+setopt hist_ignore_space      # Ignore commands with a space in front
+setopt hist_ignore_dups       # Ignore duplicates with ctrl R
+setopt hist_expire_dups_first # delete dups first when HISTFILE size exceeds HISTSIZE
+setopt hist_verify            # show history expansion before running
+setopt share_history          # Share history between terminals
 # cd history tab completion
-setopt AUTO_PUSHD                  # pushes the old directory onto the stack
-setopt PUSHD_MINUS                 # exchange the meanings of '+' and '-'
-setopt CDABLE_VARS                 # expand the expression (allows 'cd -2/tmp')
+setopt auto_pushd                  # pushes the old directory onto the stack
+setopt pushd_minus                 # exchange the meanings of '+' and '-'
+setopt cdable_vars                 # expand the expression (allows 'cd -2/tmp')
 autoload -U compinit && compinit   # load + start completion
 zstyle ':completion:*:directory-stack' list-colors '=(#b) #([0-9]#)*( *)==95=38;5;12'
-
-setopt INC_APPEND_HISTORY # Save commands before executed
-setopt SHARE_HISTORY      # Share history between terminals
-setopt HIST_IGNORE_SPACE  # Ignore commands with a space in front
-setopt HIST_IGNORE_DUPS  # Ignore duplicates with ctrl R
+# typing... + arrow, fuzzy find history
+if [[ "${terminfo[kcuu1]}" != "" ]]; then
+  autoload -U up-line-or-beginning-search
+  zle -N up-line-or-beginning-search
+  bindkey "${terminfo[kcuu1]}" up-line-or-beginning-search
+fi
+if [[ "${terminfo[kcud1]}" != "" ]]; then
+  autoload -U down-line-or-beginning-search
+  zle -N down-line-or-beginning-search
+  bindkey "${terminfo[kcud1]}" down-line-or-beginning-search
+fi
 
 # fix NTFS directory colors being unreadable in ls
 [ -f ~/.dircolors ] && eval $(dircolors -b ~/.dircolors)
