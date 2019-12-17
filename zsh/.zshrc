@@ -1,15 +1,17 @@
+zmodload zsh/zprof
 ## Plugins
 if [ ! -d "${HOME}/.zplug" ]; then
-    echo ".zplug directory not found, installing zplug"
+    echo "~/.zplug directory not found, installing zplug"
     git clone https://github.com/zplug/zplug ~/.zplug
 fi
 source ~/.zplug/init.zsh
 
+zplug "hchbaw/auto-fu.zsh"
+# zplug "b4b4r07/enhancd", use:init.sh
 zplug "zplug/zplug"
 zplug "chrissicool/zsh-256color"
 zplug "lib/git", from:oh-my-zsh
-zplug "plugins/git", from:oh-my-zsh
-zplug "plugins/git-extras", from:oh-my-zsh
+zplug "plugins/colored-man-pages", from:oh-my-zsh
 zplug "plugins/command-not-found", from:oh-my-zsh
 zplug "zsh-users/zsh-autosuggestions"
 zplug "zdharma/fast-syntax-highlighting", defer:2
@@ -69,6 +71,11 @@ function expand-alias() {
 }
 zle -N expand-alias
 bindkey -M main ' ' expand-alias
+bindkey '^[[A' history-substring-search-up
+bindkey '^[[B' history-substring-search-down
+export ENHANCD_DISABLE_HOME=1
+export ENHANCD_DISABLE_DOT=1
+export ENHANCD_HOOK_AFTER_CD="l"
 
 # cd history tab completion
 setopt AUTO_PUSHD                  # pushes the old directory onto the stack
@@ -81,6 +88,17 @@ setopt INC_APPEND_HISTORY # Save commands before executed
 setopt SHARE_HISTORY      # Share history between terminals
 setopt HIST_IGNORE_SPACE  # Ignore commands with a space in front
 setopt HIST_IGNORE_DUPS  # Ignore duplicates with ctrl R
+
+# fix NTFS directory colors being unreadable in ls
+[ -f ~/.dircolors ] && eval $(dircolors -b ~/.dircolors)
+
+export PATH=$PATH:$HOME/bin
+
+# WSL config
+if uname -r |grep -q 'Microsoft' ; then
+    cd ~ # workaround for WSL bug
+    export PATH=$PATH:/mnt/c/Windows/System32
+fi
 
 # Additional work-specific configs I can't put on github
 [ -f ~/.work-config ] && source ~/.work-config
