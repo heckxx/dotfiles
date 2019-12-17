@@ -27,32 +27,28 @@ if empty(glob('~/.vim/autoload/plug.vim'))
 endif
 
 "_VIMPLUG
+" Plugin 'gmarik/Vundle.vim'
 call plug#begin('~/.vim/plugins')
 Plug '907th/vim-auto-save'
-Plug 'airblade/vim-gitgutter'
-Plug 'ap/vim-css-color'
 Plug 'beloglazov/vim-online-thesaurus'
 Plug 'ervandew/supertab'
+Plug 'honza/vim-snippets'
 Plug 'irrationalistic/vim-tasks'
 Plug 'junegunn/fzf', { 'dir': '~/.fzf', 'do': './install --all' }
 Plug 'junegunn/fzf.vim'                     " fuzzy finder
 Plug 'junegunn/vim-easy-align'          " easy align
 Plug 'lervag/vimtex'
-Plug 'luochen1990/rainbow'
 Plug 'mbbill/undotree'
-Plug 'yggdroot/indentline'
 Plug 'nanotech/jellybeans.vim'
 Plug 'nathanaelkane/vim-indent-guides'
 Plug 'octol/vim-cpp-enhanced-highlight' " cpp syntax highlighting
 Plug 'sheerun/vim-polyglot'
+Plug 'SirVer/ultisnips'
+Plug 'terryma/vim-multiple-cursors'
 Plug 'tpope/vim-surround'
 Plug 'vim-airline/vim-airline'
 Plug 'w0rp/ale'
 Plug 'yuttie/comfortable-motion.vim'
-Plug 'markonm/traces.vim'
-Plug 'kshenoy/vim-signature'
-Plug 'inkarkat/vim-mark'
-Plug 'inkarkat/vim-ingo-library'
 Plug 'vimwiki/vimwiki'
 if !has('nvim')
     Plug 'tpope/vim-sensible'
@@ -77,12 +73,10 @@ if !has('nvim')
     " centralized directory for backup/swap files
     set backupdir=~/.vim/backup//
     set directory=~/.vim/swap//
+endif
 let g:netrw_liststyle=3
 "__NVIM_SPECIFIC
-else
 " nothing here yet!
-endif
-
 "__OTHER
 " colorscheme with transparant backgrount
 colorscheme jellybeans
@@ -95,11 +89,14 @@ highlight ColorColumn ctermbg=darkgrey
 "autocmd FileType python set textwidth=80
 "autocmd FileType python set colorcolumn=80
 " Indent settings
-set ts=4 sw=4 sts=4 et
+" if i ever want to switch to disgusting tabs:
+" set ts=4 sw=4 sts=0 noet
+" set ts=4 sw=4 sts=4 et
+set ts=2 sw=2 sts=2 et
 set linebreak
 set list listchars=tab:>\ ,trail:·,nbsp:+
 set visualbell
-set number numberwidth=2
+set number relativenumber numberwidth=2
 set ignorecase smartcase
 set splitbelow splitright
 set hidden
@@ -123,49 +120,48 @@ autocmd FileType SIGKILL inoremap I i
 set lazyredraw
 
 "_PLUGIN
-let g:gitgutter_grep = 'rg'
-    let g:gitgutter_map_keys = 0
-    let g:gitgutter_highlight_linesnrs = 1
-let g:rainbow_active = 1 "Rainbow parens coloring
-let g:indentLine_char = '|'
+"__AIRLINE
 let g:airline#extensions#tabline#enabled=1
-    let g:airline#extensions#syntastic#enabled=1
-    let g:airline#extensions#tabline#buffer_nr_show=1
-    let g:airline_theme='dark'
-    let g:airline_powerline_fonts=1
-    if !exists('g:airline_symbols')
-        let g:airline_symbols = {}
-    endif
-    " unicode symbols
-    let g:airline_left_sep = '»'
-    let g:airline_left_sep = '▶'
-    let g:airline_right_sep = '«'
-    let g:airline_right_sep = '◀'
-    let g:airline_symbols.linenr = '␊'
-    let g:airline_symbols.linenr = '␤'
-    let g:airline_symbols.linenr = '¶'
-    let g:airline_symbols.branch = '⎇'
-    let g:airline_symbols.paste = 'ρ'
-    let g:airline_symbols.paste = 'Þ'
-    let g:airline_symbols.paste = '∥'
-    let g:airline_symbols.whitespace = 'Ξ'
-    " powerline symbols
-    let g:airline_left_sep = ''
-    let g:airline_left_alt_sep = ''
-    let g:airline_right_sep = ''
-    let g:airline_right_alt_sep = ''
-    let g:airline_symbols.branch = ''
-    let g:airline_symbols.readonly = ''
-    let g:airline_symbols.linenr = ''
-    call airline#parts#define_function('ALE', 'ALEGetStatusLine')
-    call airline#parts#define_condition('ALE', 'exists("*ALEGetStatusLine")')
-    let g:airline_section_error = airline#section#create_right(['ALE'])
-    let g:jellybeans_background_color_256='NONE'
+let g:airline#extensions#syntastic#enabled=1
+let g:airline#extensions#tabline#buffer_nr_show=1
+let g:airline_theme='dark'
+let g:airline_powerline_fonts=1
+if !exists('g:airline_symbols')
+    let g:airline_symbols = {}
+endif
+" unicode symbols
+let g:airline_left_sep = '»'
+let g:airline_left_sep = '▶'
+let g:airline_right_sep = '«'
+let g:airline_right_sep = '◀'
+let g:airline_symbols.linenr = '␊'
+let g:airline_symbols.linenr = '␤'
+let g:airline_symbols.linenr = '¶'
+let g:airline_symbols.branch = '⎇'
+let g:airline_symbols.paste = 'ρ'
+let g:airline_symbols.paste = 'Þ'
+let g:airline_symbols.paste = '∥'
+let g:airline_symbols.whitespace = 'Ξ'
+" powerline symbols
+let g:airline_left_sep = ''
+let g:airline_left_alt_sep = ''
+let g:airline_right_sep = ''
+let g:airline_right_alt_sep = ''
+let g:airline_symbols.branch = ''
+let g:airline_symbols.readonly = ''
+let g:airline_symbols.linenr = ''
+call airline#parts#define_function('ALE', 'ALEGetStatusLine')
+call airline#parts#define_condition('ALE', 'exists("*ALEGetStatusLine")')
+let g:airline_section_error = airline#section#create_right(['ALE'])
+let g:jellybeans_background_color_256='NONE'
+
+"__ALE
 let g:ale_lint_delay = 500
-" disable autosave for now
+
+"__AUTOSAVE
 let g:auto_save = 0
-    let g:auto_save_no_updatetime = 1
-    let g:auto_save_in_insert_mode = 0
+let g:auto_save_no_updatetime = 1
+let g:auto_save_in_insert_mode = 0
 
 "__DEOPLETE
 if has('nvim')
@@ -193,9 +189,22 @@ inoremap <expr> <c-x><c-k> fzf#vim#complete#word({'left': '14%'})"
 "__POLYGLOT
 let g:polyglot_disabled = ['latex']
 
+
 "__SMOOTH_SCROLL
-let g:comfortable_motion_friction = 300.0
-let g:comfortable_motion_air_drag = 1
+let g:comfortable_motion_friction = 100.0
+let g:comfortable_motion_air_drag = 2.0
+
+"__SYNTASTIC
+"let g:syntastic_cpp_compiler_options = '$(pkg-config gtkmm-3.0 --cflags --libs)'
+"let g:syntastic_c_compiler_options = '$(pkg-config gtk+-3.0 --cflags --libs)'
+"__TASKS
+let g:TasksAttributeMarker = '#'
+"__ULTISNIPS
+let g:UltiSnipsExpandTrigger="<c-Space>"
+let g:UltiSnipsJumpForwardTrigger="<c-b>"
+let g:UltiSnipsJumpBackwardTrigger="<c-z>"
+" If you want :UltiSnipsEdit to split your window.
+let g:UltiSnipsEditSplit="vertical"
 
 "__UNDOTREE
 if has("persistent_undo")
