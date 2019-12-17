@@ -6,18 +6,18 @@
                                       
 --]]
 
-local gears = require("gears")
-local lain  = require("lain")
-local awful = require("awful")
-local wibox = require("wibox")
-local os    = { getenv = os.getenv }
+local gears   = require("gears")
+local lain    = require("lain")
+local awful   = require("awful")
+local wibox   = require("wibox")
+local os      = { getenv = os.getenv }
 
 local theme                                     = {}
 
 theme.dir                                       = os.getenv("HOME") .. "/.config/awesome/themes/powerarrow-dark"
 theme.wallpaper                                 = theme.dir .. "/wall.png"
 
-theme.font                                      = "Terminus 8"
+theme.font                                      = "Terminus 10"
 theme.fg_normal                                 = "#B2B2CA"
 theme.fg_focus                                  = "#EEEEFF"
 theme.fg_urgent                                 = "#DD9393"
@@ -31,9 +31,9 @@ theme.border_normal                             = "#3F3F3F"
 theme.border_focus                              = "#7F7F7F"
 theme.border_marked                             = "#CC9393"
 theme.tasklist_bg_focus                         = "#1A1A1A"
-theme.taglist_bg_focus                           = theme.bg_focus
-theme.taglist_bg_normal                          = theme.bg_normal
-theme.taglist_fg_focus                           = theme.fg_focus
+theme.taglist_bg_focus                          = theme.bg_focus
+theme.taglist_bg_normal                         = theme.bg_normal
+theme.taglist_fg_focus                          = theme.fg_focus
 theme.titlebar_bg_focus                         = theme.bg_focus
 theme.titlebar_bg_normal                        = theme.bg_normal
 theme.titlebar_fg_focus                         = theme.fg_focus
@@ -98,22 +98,28 @@ local separators = lain.util.separators
 
 -- Textclock
 local clockicon = wibox.widget.imagebox(theme.widget_clock)
-local clock = lain.widget.watch({
+local clock = awful.widget.watch(' date +"%a %d %b %l:%M"', 60,
+    function(widget, stdout)
+        widget:set_markup(" " .. markup.font(theme.font, stdout))
+    end
+)
+--[[
+local clock = awful.widget.watch({
     timeout  = 60,
     cmd      = " date +'%a %d %b %R'",
     settings = function()
         widget:set_markup(" " .. markup.font(theme.font, output))
     end
 })
+--]]
 
 -- Calendar
-theme.cal = lain.widget.calendar({
-    attach_to = { clock.widget },
-    notification_preset = {
-        font = "xos4 Terminus 10",
-        fg   = theme.fg_normal,
-        bg   = theme.bg_normal
-    }
+theme.cal = lain.widget.cal({
+    attach_to = { clock },
+    week_start = 1,
+    three = true,
+    week_number = "left",
+    followtag = true
 })
 
 -- Mail IMAP check
@@ -136,6 +142,14 @@ local mail = lain.widget.imap({
     end
 })
 --]]
+
+-- MPD
+local spotifyicon = wibox.widget.imagebox(theme.widget_music)
+theme.spotify = require("awesome-wm-widgets.spotify-widget.spotify")({
+  font = theme.font,
+  play_icon = theme.widget_music_on,
+  pause_icon = theme.widget_music
+});
 
 -- MPD
 local mpdicon = wibox.widget.imagebox(theme.widget_music)
@@ -177,7 +191,7 @@ local mem = lain.widget.mem({
 local cpuicon = wibox.widget.imagebox(theme.widget_cpu)
 local cpu = lain.widget.cpu({
     settings = function()
-        widget:set_markup(markup.font(theme.font, " " .. cpu_now.usage .. "% "))
+        widget:set_markup(markup.font(theme.font, " " .. string.format("%3d",cpu_now.usage) .. "% "))
     end
 })
 
@@ -190,6 +204,7 @@ local temp = lain.widget.temp({
 })
 
 -- / fs
+--[[
 local fsicon = wibox.widget.imagebox(theme.widget_hdd)
 theme.fs = lain.widget.fs({
     options  = "--exclude-type=tmpfs",
@@ -198,9 +213,18 @@ theme.fs = lain.widget.fs({
         widget:set_markup(markup.font(theme.font, " " .. fs_now.used .. "% "))
     end
 })
+]]
 
 -- Battery
 local baticon = wibox.widget.imagebox(theme.widget_battery)
+--local bat_widget = require("awesome-wm-widgets.batteryarc-widget.batteryarc")
+--[[local bat = bat_widget({
+    font = theme.font,
+    main_color = theme.fg_normal,
+    charging = theme.fg_normal,
+    show_current_level = true
+  })
+  ]]
 local bat = lain.widget.bat({
     settings = function()
         if bat_now.status ~= "N/A" then
@@ -220,8 +244,7 @@ local bat = lain.widget.bat({
             widget:set_markup(markup.font(theme.font, " AC "))
             baticon:set_image(theme.widget_ac)
         end
-    end,
-    battery = "BAT1"
+    end
 })
 
 -- ALSA volume
@@ -239,7 +262,9 @@ theme.volume = lain.widget.alsa({
         end
 
         widget:set_markup(markup.font(theme.font, " " .. volume_now.level .. "% "))
-    end
+    end,
+    cmd = "amixer -D pulse"
+
 })
 volicon:buttons(awful.util.table.join(
     awful.button({}, 4, function () awful.spawn.with_shell("amixer -D pulse set Master playback 3%+") theme.volume.update() end),
@@ -278,13 +303,11 @@ function theme.at_screen_connect(s)
     })
 
     -- If wallpaper is a function, call it with the screen
-    --[[
     local wallpaper = theme.wallpaper
     if type(wallpaper) == "function" then
         wallpaper = wallpaper(s)
     end
-    gears.wallpaper.maximized(wallpaper, s, true)
-    ]]
+    gears.wallpaper.maximized(wallpaper, s)
 
     -- Tags
     layout = awful.layout.layouts
@@ -308,7 +331,7 @@ function theme.at_screen_connect(s)
     s.mytasklist = awful.widget.tasklist(s, awful.widget.tasklist.filter.currenttags, awful.util.tasklist_buttons)
 
     -- Create the wibox
-    s.mywibox = awful.wibar({ position = "top", screen = s, height = 14, bg = theme.bg_normal, fg = theme.fg_normal })
+    s.mywibox = awful.wibar({ position = "top", screen = s, height = 20, bg = theme.bg_normal, fg = theme.fg_normal })
 
     -- Add widgets to the wibox
     s.mywibox:setup {
@@ -326,8 +349,8 @@ function theme.at_screen_connect(s)
             wibox.widget.systray(),
             spr,
             arrl_ld,
-            wibox.container.background(mpdicon, theme.bg_focus),
-            wibox.container.background(theme.mpd.widget, theme.bg_focus),
+            --wibox.container.background(spotifyicon, theme.bg_focus),
+            wibox.container.background(theme.spotify, theme.bg_focus),
             arrl_dl,
             volicon,
             theme.volume.widget,
@@ -354,7 +377,7 @@ function theme.at_screen_connect(s)
             neticon,
             net.widget,
             arrl_ld,
-            wibox.container.background(clock.widget, theme.bg_focus),
+            wibox.container.background(clock, theme.bg_focus),
             arrl_dl,
             s.mylayoutbox,
         },

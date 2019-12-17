@@ -1,11 +1,3 @@
-
---[[
-                                       
-     Awesome WM configuration template 
-     github.com/copycat-killer         
-                                       
---]]
-
 -- {{{ Required libraries
 local awesome, client, screen, tag = awesome, client, screen, tag
 local ipairs, string, os, table, tostring, tonumber, type = ipairs, string, os, table, tostring, tonumber, type
@@ -21,6 +13,17 @@ local lain          = require("lain")
 local freedesktop   = require("freedesktop")
 local hotkeys_popup = require("awful.hotkeys_popup").widget
 -- }}}
+
+-- Override awesome.quit when we're using GNOME
+_awesome_quit = awesome.quit
+awesome.quit = function()
+    if os.getenv("DESKTOP_SESSION") == "awesome-gnome" then
+       os.execute("gnome-session-quit") -- for Ubuntu 14.04
+       os.execute("pkill -9 gnome-session") -- I use this on Ubuntu 16.04
+    else
+    _awesome_quit()
+    end
+end
 
 -- {{{ Error handling
 if awesome.startup_errors then
@@ -67,21 +70,25 @@ local function run_once(cmd, name)
     awful.spawn.with_shell("pgrep -u $USER -x " .. name .. " > /dev/null || (" .. cmd .. ")")
 end
 
-run_once("urxvtd unclutter -root")
+--run_once("urxvtd unclutter -root")
 run_once("compton -b")
 
 -- }}}
+
 
 -- {{{ Variable definitions
 local chosen_theme = "powerarrow-dark"
 local modkey       = "Mod3"
 local altkey       = "Mod1"
-local terminal     = "urxvt" or "xterm"
+local terminal     = "gnome-terminal" or "xterm"
 local editor       = os.getenv("EDITOR") or "vim" or "vi"
 local gui_editor   = "gvim"
 local browser      = "firefox"
 
-beautiful.useless_gap = 2
+local theme_path = string.format("%s/.config/awesome/themes/%s/theme_personal.lua", os.getenv("HOME"), chosen_theme)
+beautiful.init(theme_path)
+beautiful.useless_gap = 8
+
 awful.util.terminal = terminal
 awful.util.tagnames = { "", "🌎", "🚀", "📁", "♫", "🎬", "⚒", "💼", "💻"}
 awful.layout.layouts = {
@@ -89,24 +96,24 @@ awful.layout.layouts = {
     awful.layout.suit.tile,
     --awful.layout.suit.tile.left,
     awful.layout.suit.tile.bottom,
-    --awful.layout.suit.tile.top,
-    --awful.layout.suit.fair,
-    --awful.layout.suit.fair.horizontal,
-    --awful.layout.suit.spiral,
-    --awful.layout.suit.spiral.dwindle,
+    awful.layout.suit.tile.top,
+    awful.layout.suit.fair,
+    awful.layout.suit.fair.horizontal,
+    awful.layout.suit.spiral,
+    awful.layout.suit.spiral.dwindle,
     awful.layout.suit.magnifier,
     awful.layout.suit.max,
-    --awful.layout.suit.max.fullscreen,
-    --awful.layout.suit.corner.nw,
-    --awful.layout.suit.corner.ne,
-    --awful.layout.suit.corner.sw,
-    --awful.layout.suit.corner.se,
-    --lain.layout.cascade,
-    --lain.layout.cascade.tile,
-    --lain.layout.centerwork,
-    --lain.layout.centerwork.horizontal,
-    --lain.layout.termfair,
-    --lain.layout.termfair.center,
+    awful.layout.suit.max.fullscreen,
+    awful.layout.suit.corner.nw,
+    awful.layout.suit.corner.ne,
+    awful.layout.suit.corner.sw,
+    awful.layout.suit.corner.se,
+    lain.layout.cascade,
+    lain.layout.cascade.tile,
+    lain.layout.centerwork,
+    lain.layout.centerwork.horizontal,
+    lain.layout.termfair,
+    lain.layout.termfair.center,
 }
 awful.util.taglist_buttons = awful.util.table.join(
                     -- awful.button({ }, 1, function(t) t:view_only() end),
@@ -171,9 +178,6 @@ lain.layout.cascade.tile.offset_y      = 32
 lain.layout.cascade.tile.extra_padding = 5
 lain.layout.cascade.tile.nmaster       = 5
 lain.layout.cascade.tile.ncol          = 2
-
-local theme_path = string.format("%s/.config/awesome/themes/%s/theme_personal.lua", os.getenv("HOME"), chosen_theme)
-beautiful.init(theme_path)
 -- }}}
 
 -- {{{ Menu
@@ -229,10 +233,11 @@ root.buttons(awful.util.table.join(
 globalkeys = awful.util.table.join(
     -- Take a screenshot
     -- https://github.com/copycat-killer/dots/blob/master/bin/screenshot
-    awful.key({ altkey }, "p", function() os.execute("screenshot") end),
+    awful.key({ "Control", "Shift" }, "x", function() os.execute("flameshot gui") end, 
+        {description="take screenshot", group="awesome"}),
 
     -- Hotkeys
-    awful.key({ modkey,           }, "w", function() awful.spawn.with_shell('i3lock-fancy -gp') end,
+    awful.key({ modkey,           }, "w", function() awful.spawn.with_shell('lock --no-text --blur=0x8') end,
               {description="lock", group="awesome"}),
     awful.key({ modkey,           }, "s",      hotkeys_popup.show_help,
               {description="show help", group="awesome"}),
@@ -379,8 +384,8 @@ globalkeys = awful.util.table.join(
               {description = "restore minimized", group = "client"}),
 
     -- Dropdown application
-    awful.key({}, "`", function () awful.screen.focused().quake:toggle() end,
-              {description = "dropdown terminal", group = "other"}),
+    --awful.key({}, "`", function () awful.screen.focused().quake:toggle() end,
+              --{description = "dropdown terminal", group = "other"}),
 
     -- Widgets popups
     --[[
@@ -605,6 +610,7 @@ awful.rules.rules = {
     { rule_any = { type = { "dialog", "normal" } },
       properties = { titlebars_enabled = false } },
 
+      --[[
     { rule = { class = "Firefox" },
       properties = { screen = 1, tag = screen[1].tags[2] } },
 
@@ -624,6 +630,7 @@ awful.rules.rules = {
           properties = { tag = screen[1].tags[1] } },
     { rule = { class = "Gimp", role = "gimp-image-window" },
           properties = { maximized = true } },
+          ]]
 }
 -- }}}
 
@@ -712,23 +719,24 @@ client.connect_signal("focus",
 client.connect_signal("unfocus", function(c) c.border_color = beautiful.border_normal end)
 -- }}}
 --
-run_once("redshift")
-run_once("~/.config/scripts/wallpaper slideshow","wallpaper") -- wallpaper changer
+--run_once("redshift")
+--run_once("~/.config/scripts/wallpaper slideshow","wallpaper") -- wallpaper changer
 --run_once("xset","m 0 0") -- disable mouse acceleration
-run_once("xset -b") -- disable hardware beep
-run_once("xautolock -detectsleep -time 30 -locker \"i3lock-fancy -gp\"") -- desktop locker
+--run_once("xset -b") -- disable hardware beep
+run_once("xset dpms 300 300 300") -- monitor 5 min standby
+--run_once("xautolock -detectsleep -time 30 -locker \"i3lock-fancy -gp\"") -- desktop locker
 run_once("xmodmap ~/.Xmodmap") -- map ctrl to mod
-run_once("setxkbmap option ctrl:nocaps") -- map capslock to ctrl
-run_once("/usr/lib/polkit-gnome/polkit-gnome-authentication-agent-1") -- Authentication agent (for mounting)
+--run_once("setxkbmap option ctrl:nocaps") -- map capslock to ctrl
+--run_once("/usr/lib/polkit-gnome/polkit-gnome-authentication-agent-1") -- Authentication agent (for mounting)
 --startup services/daemons
 --run_once("deluge")
 --run_once("mpd")
 --run_once("mpdscribble")
-run_once("dropbox start")
-run_once("xbindkeys")
-run_once("numlockx on")
+--run_once("dropbox start")
+--run_once("xbindkeys")
+--run_once("numlockx on")
 --startup programs
 --run_once("nulloy")
 run_once("spotify")
 run_once("firefox")
-run_once("env STEAM_RUNTIME=0 steam","steam")
+--run_once("env STEAM_RUNTIME=0 steam","steam")

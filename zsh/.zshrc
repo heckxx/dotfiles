@@ -1,132 +1,119 @@
-# Path to your oh-my-zsh installation.
-export ZSH=/home/edward/.oh-my-zsh
+zmodload zsh/zprof
+## Plugins
+if [ ! -d "${HOME}/.zplug" ]; then
+    echo "~/.zplug directory not found, installing zplug"
+    git clone https://github.com/zplug/zplug ~/.zplug
+fi
+source ~/.zplug/init.zsh
 
-# Set name of the theme to load.
-# Look in ~/.oh-my-zsh/themes/
-# Optionally, if you set this to "random", it'll load a random theme each
-# time that oh-my-zsh is loaded.
-# ZSH_THEME="todo"
-ZSH_THEME="alanpeabody"
+zplug "hchbaw/auto-fu.zsh"
+# zplug "b4b4r07/enhancd", use:init.sh
+zplug "zplug/zplug"
+zplug "chrissicool/zsh-256color"
+zplug "lib/git", from:oh-my-zsh
+zplug "plugins/colored-man-pages", from:oh-my-zsh
+zplug "plugins/command-not-found", from:oh-my-zsh
+zplug "zsh-users/zsh-autosuggestions"
+zplug "zdharma/fast-syntax-highlighting", defer:2
+zplug "zsh-users/zsh-history-substring-search"
 
-# Uncomment the following line to use case-sensitive completion.
-# CASE_SENSITIVE="true" 
+zplug "romkatv/powerlevel10k", as:theme, depth:1
 
-# Uncomment the following line to disable bi-weekly auto-update checks.
-# DISABLE_AUTO_UPDATE="true"
+# Install plugins if there are plugins that have not been installed
+if ! zplug check --verbose; then
+    echo; zplug install
+fi
+zplug load
 
-# Uncomment the following line to change how often to auto-update (in days).
-# export UPDATE_ZSH_DAYS=13
+## Prompt
+#export PROMPT='%{$fg[magenta]%}%n%{$reset_color%}@%{$fg[yellow]%}[$TARGET_PRODUCT-$TARGET_BUILD_VARIANT]%{$fg[magenta]%}${ASP_BUILD_FROM_SOURCE++ASP} %{$fg[blue]%}%~%{$reset_color%}$ '
+[[ ! -f ~/.p10k.zsh ]] || source ~/.p10k.zsh
+POWERLEVEL9K_LEFT_PROMPT_ELEMENTS=(
+    # os_icon               # os identifier
+    context                 # user@hostname
+    dir                     # current directory
+    vcs                     # git status
+    prompt_char             # prompt symbol
+)
+POWERLEVEL9K_RIGHT_PROMPT_ELEMENTS=(
+    status                  # exit code of the last command
+    command_execution_time  # duration of the last command
+    background_jobs         # presence of background jobs
+    virtualenv              # python virtual environment (https://docs.python.org/3/library/venv.html)
+    envstatus               # CUSTOM: environment status
+    public_ip               # public IP address
+    battery                 # internal battery
+)
+## Fuzzy completion
+# 0 -- vanilla completion (abc => abc)
+# 1 -- smart case completion (abc => Abc)
+# 2 -- word flex completion (abc => A-big-Car)
+# 3 -- full flex completion (abc => ABraCadabra)
+zstyle ':completion:*' matcher-list '' \
+  'm:{a-z\-}={A-Z\_}' \
+  'r:[^[:alpha:]]||[[:alpha:]]=** r:|=* m:{a-z\-}={A-Z\_}' \
+  'r:|?=** m:{a-z\-}={A-Z\_}'
 
-# Uncomment the following line to disable colors in ls.
-# DISABLE_LS_COLORS="true"
-
-# Uncomment the following line to disable auto-setting terminal title.
-# DISABLE_AUTO_TITLE="true"
-
-# Uncomment the following line to enable command auto-correction.
-# ENABLE_CORRECTION="true"
-
-# Uncomment the following line to display red dots whilst waiting for completion.
-COMPLETION_WAITING_DOTS="true"
-
-# Uncomment the following line if you want to disable marking untracked files
-# under VCS as dirty. This makes repository status check for large repositories
-# much, much faster.
-# DISABLE_UNTRACKED_FILES_DIRTY="true"
-
-# Uncomment the following line if you want to change the command execution time
-# stamp shown in the history command output.
-# The optional three formats: "mm/dd/yyyy"|"dd.mm.yyyy"|"yyyy-mm-dd"
-# HIST_STAMPS="mm/dd/yyyy"
-
-# Would you like to use another custom folder than $ZSH/custom?
-# ZSH_CUSTOM=/path/to/new-custom-folder
-
-# Which plugins would you like to load? (plugins can be found in ~/.oh-my-zsh/plugins/*)
-# Custom plugins may be added to ~/.oh-my-zsh/custom/plugins/
-# Example format: plugins=(rails git textmate ruby lighthouse)
-# Add wisely, as too many plugins slow down shell startup.
-plugins=(command-not-found git common-aliases git-extras fzf-zsh compleat zsh-syntax-highlighting)
-
-# User configuration
-
-export PATH="/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/usr/bin/core_perl"
-# export MANPATH="/usr/local/man:$MANPATH"
-
-#### startup tmux
-#if command -v tmux>/dev/null; then
-  #[[ ! $TERM =~ screen ]] && [ -z $TMUX ] && exec tmux -2
-#fi
-source $ZSH/oh-my-zsh.sh
-
-#
-# fuzzy completion
 [ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
-#zstyle ':completion:*' accept-exact '*(N)'
-#zstyle ':completion:*' use-cache on
-#zstyle ':completion:*' cache-path ~/.zsh/cache
-#zstyle ':completion:*' matcher-list 'r:[[:ascii:]]||[[:ascii:]]=** r:|=* m:{a-z\-}={A-Z\_}'
-
 # --files: List files that would be searched but do not search
-# --no-ignore: Do not respect .gitignore, etc...
 # --hidden: Search hidden files and folders
 # --follow: Follow symlinks
-# --glob: Additional conditions for search (in this case ignore everything in the .git/ folder)
-export FZF_DEFAULT_COMMAND='rg --files --no-ignore --hidden --follow --glob "!.git/*"'
-
+export FZF_DEFAULT_COMMAND='fd --hidden --follow'
 export FZF_CTRL_T_OPTS="--select-1 --exit-0 --preview '(highlight -O ansi -l {} 2> /dev/null || cat {} || tree -C {}) 2> /dev/null | head -200'"
 export FZF_ALT_C_OPTS="--preview 'tree -C {} | head -200'"
 
-# Python virtualenvwrapper
-source /usr/sbin/virtualenvwrapper.sh
+## Aliases
+[ -f ~/.aliases ] && source ~/.aliases
+# Expand aliases with space
+function expand-alias() {
+    zle _expand_alias
+    zle self-insert
+}
+zle -N expand-alias
+bindkey -M main ' ' expand-alias
+export ENHANCD_DISABLE_HOME=1
+export ENHANCD_DISABLE_DOT=1
+export ENHANCD_HOOK_AFTER_CD="l"
+# ctrl + arrow, move by word
+bindkey '^[[1;5C' forward-word
+bindkey '^[[1;5D' backward-word
 
-# You may need to manually set your language environment
-# export LANG=en_US.UTF-8
-
-# Preferred editor for local and remote sessions
-# if [[ -n $SSH_CONNECTION ]]; then
-#   export EDITOR='vim'
-# else
-#   export EDITOR='mvim'
-# fi
-
-# Compilation flags
-# export ARCHFLAGS="-arch x86_64"
-
-# ssh
-# export SSH_KEY_PATH="~/.ssh/dsa_id"
-
-# Set personal aliases, overriding those provided by oh-my-zsh libs,
-# plugins, and themes. Aliases can be placed here, though oh-my-zsh
-# users are encouraged to define aliases within the ZSH_CUSTOM folder.
-# For a full list of active aliases, run `alias`.
-#
-# Example aliases
-alias zshconfig="mate ~/.zshrc"
-alias ohmyzsh="mate ~/.oh-my-zsh"
-alias :e="nvim"
-alias :q="exit"
-alias please='sudo $(fc -ln -1)'
-alias rm='rm -I'
-alias variety='~/.config/scripts/wallpaper'
-alias ayylmao='figlet ayylmao'
-alias git='hub'
-alias search='rg --no-line-number --no-heading . | fzf'
-alias searchh='rg --hidden --no-line-number --no-heading . | fzf'
-
-export VISUAL="vim"
-export EDITOR="vim"
-export QT_STYLE_OVERRIDE=GTK+
-export STEAM_RUNTIME=0
-
-setopt HIST_IGNORE_SPACE
-
-# automatically update colorscheme
-~/.config/scripts/colorshift.sh < ~/.Xcolors
-trap "~/.config/scripts/colorshift.sh < ~/.Xcolors" USR1
-
-#~/git/projects/todo/todo.py
+## History
+HISTFILE="$HOME/.zsh_history"
+setopt extended_history       # Ignore commands with a space in front
+setopt hist_ignore_space      # Ignore commands with a space in front
+setopt hist_ignore_dups       # Ignore duplicates with ctrl R
+setopt hist_expire_dups_first # delete dups first when HISTFILE size exceeds HISTSIZE
+setopt hist_verify            # show history expansion before running
+setopt share_history          # Share history between terminals
+# cd history tab completion
+setopt auto_pushd                  # pushes the old directory onto the stack
+setopt pushd_minus                 # exchange the meanings of '+' and '-'
+setopt cdable_vars                 # expand the expression (allows 'cd -2/tmp')
+autoload -U compinit && compinit   # load + start completion
+zstyle ':completion:*:directory-stack' list-colors '=(#b) #([0-9]#)*( *)==95=38;5;12'
+# typing... + arrow, fuzzy find history
+if [[ "${terminfo[kcuu1]}" != "" ]]; then
+  autoload -U up-line-or-beginning-search
+  zle -N up-line-or-beginning-search
+  bindkey "${terminfo[kcuu1]}" up-line-or-beginning-search
+fi
+if [[ "${terminfo[kcud1]}" != "" ]]; then
+  autoload -U down-line-or-beginning-search
+  zle -N down-line-or-beginning-search
+  bindkey "${terminfo[kcud1]}" down-line-or-beginning-search
+fi
 
 # fix NTFS directory colors being unreadable in ls
-eval $(dircolors -b .dircolors)
+[ -f ~/.dircolors ] && eval $(dircolors -b ~/.dircolors)
 
+export PATH=$PATH:$HOME/bin
+
+# WSL config
+if uname -r |grep -q 'Microsoft' ; then
+    cd ~ # workaround for WSL bug
+    export PATH=$PATH:/mnt/c/Windows/System32
+fi
+
+# Additional work-specific configs I can't put on github
+[ -f ~/.work-config ] && source ~/.work-config

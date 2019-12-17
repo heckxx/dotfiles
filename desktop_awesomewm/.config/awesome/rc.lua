@@ -71,6 +71,7 @@ run_once("compton -b")
 -- }}}
 
 -- {{{ Variable definitions
+<<<<<<< Updated upstream
 local chosen_theme = "powerarrow-dark"
 local modkey       = "Mod3"
 local altkey       = "Mod1"
@@ -79,6 +80,11 @@ local editor       = os.getenv("EDITOR") or "vim" or "vi"
 local gui_editor   = "gvim"
 local browser      = "firefox"
 local quake        = lain.util.quake({ app = terminal, height = 1, followtag = true, argname = "--name %s" })
+=======
+local vars = require("vars")
+local chosen_theme, lock, gui_editor, browser = vars.chosen_theme, vars.lock, vars.gui_editor, vars.browser
+local modkey, altkey, terminal, editor = vars.modkey, vars.altkey, vars.terminal, vars.editor
+>>>>>>> Stashed changes
 
 beautiful.useless_gap = 3
 awful.util.terminal = terminal
@@ -171,6 +177,14 @@ lain.layout.cascade.tile.extra_padding = 5
 lain.layout.cascade.tile.nmaster       = 5
 lain.layout.cascade.tile.ncol          = 2
 
+-- Set keys
+local keybindings = require("keybindings")
+awful.util.taglist_buttons = keybindings.taglist_buttons
+awful.util.tasklist_buttons = keybindings.tasklist_buttons
+root.buttons(keybindings.global_buttons)
+root.keys(keybindings.global_keys)
+
+-- }}}
 local theme_path = string.format("%s/.config/awesome/themes/%s/theme_personal.lua", os.getenv("HOME"), chosen_theme)
 beautiful.init(theme_path)
 -- }}}
@@ -214,6 +228,7 @@ end)
 awful.screen.connect_for_each_screen(function(s) beautiful.at_screen_connect(s) end)
 -- }}}
 
+<<<<<<< Updated upstream
 -- {{{ Mouse bindings
 root.buttons(awful.util.table.join(
     --[[
@@ -582,6 +597,8 @@ clientbuttons = awful.util.table.join(
 -- Set keys
 root.keys(globalkeys)
 -- }}}
+=======
+>>>>>>> Stashed changes
 
 -- {{{ Rules
 -- Rules to apply to new clients (through the "manage" signal).
@@ -592,8 +609,13 @@ awful.rules.rules = {
                      border_color = beautiful.border_normal,
                      focus = awful.client.focus.filter,
                      raise = true,
+<<<<<<< Updated upstream
                      keys = clientkeys,
                      buttons = clientbuttons,
+=======
+                     keys = keybindings.client_keys,
+                     buttons = keybindings.client_buttons,
+>>>>>>> Stashed changes
                      screen = awful.screen.preferred,
                      placement = awful.placement.no_overlap+awful.placement.no_offscreen,
                      size_hints_honor = false

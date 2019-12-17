@@ -1,24 +1,3 @@
-" _VIMPLUG
-" _SETTINGS
-" __SYNTAX
-" __VIM_SPECIFIC
-" __NVIM_SPECIFIC
-" __OTHER
-" __FILE_SPECIFIC
-" _PLUGIN
-" __AIRLINE
-" __ALE
-" __AUTOSAVE
-" __FZF
-" __SMOOTH_SCROLL
-" __SYNTASTIC
-" __TASKS
-" __ULTISNIPS
-" __UNDOTREE
-" __VIMWIKI
-" _KEYBINDINGS
-" _PLUGINKEYBINDINGS
-
 " install vim-plug if not already installed
 if empty(glob('~/.vim/autoload/plug.vim'))
   silent !curl -fLo ~/.vim/autoload/plug.vim --create-dirs
@@ -27,33 +6,44 @@ if empty(glob('~/.vim/autoload/plug.vim'))
 endif
 
 "_VIMPLUG
-" Plugin 'gmarik/Vundle.vim'
 call plug#begin('~/.vim/plugins')
 Plug '907th/vim-auto-save'
+Plug 'Yggdroot/indentLine'
+Plug 'airblade/vim-gitgutter'
+Plug 'ap/vim-css-color'
+Plug 'aserebryakov/vim-todo-lists'
 Plug 'beloglazov/vim-online-thesaurus'
-Plug 'ervandew/supertab'
+Plug 'embear/vim-foldsearch'
 Plug 'honza/vim-snippets'
+Plug 'inkarkat/vim-ingo-library'
+Plug 'inkarkat/vim-mark'
 Plug 'irrationalistic/vim-tasks'
 Plug 'junegunn/fzf', { 'dir': '~/.fzf', 'do': './install --all' }
-Plug 'junegunn/fzf.vim'                     " fuzzy finder
+Plug 'junegunn/fzf.vim'                 " fuzzy finder
 Plug 'junegunn/vim-easy-align'          " easy align
+Plug 'kshenoy/vim-signature'            " display marks
 Plug 'lervag/vimtex'
+Plug 'luochen1990/rainbow'
+Plug 'markonm/traces.vim'               " command preview
 Plug 'mbbill/undotree'
 Plug 'nanotech/jellybeans.vim'
 Plug 'nathanaelkane/vim-indent-guides'
 Plug 'octol/vim-cpp-enhanced-highlight' " cpp syntax highlighting
+Plug 'powerman/vim-plugin-AnsiEsc'
+Plug 'psliwka/vim-smoothie'
 Plug 'sheerun/vim-polyglot'
-Plug 'SirVer/ultisnips'
 Plug 'terryma/vim-multiple-cursors'
+Plug 'thinca/vim-logcat'
+Plug 'tpope/vim-fugitive'
 Plug 'tpope/vim-surround'
 Plug 'vim-airline/vim-airline'
-Plug 'w0rp/ale'
-Plug 'yuttie/comfortable-motion.vim'
+Plug 'vim-scripts/advancedsorters'
 Plug 'vimwiki/vimwiki'
-if !has('nvim')
-    Plug 'tpope/vim-sensible'
-elseif has('nvim')
+Plug 'w0rp/ale'
+if has('nvim')
     Plug 'Shougo/deoplete.nvim', { 'do': ':UpdateRemotePlugins' }
+else
+    Plug 'tpope/vim-sensible'
 endif
 call plug#end()
 
@@ -75,8 +65,8 @@ if !has('nvim')
     set directory=~/.vim/swap//
 endif
 let g:netrw_liststyle=3
-"__NVIM_SPECIFIC
-" nothing here yet!
+let g:python3_host_prog='/usr/bin/python3.7'
+
 "__OTHER
 " colorscheme with transparant backgrount
 colorscheme jellybeans
@@ -89,25 +79,26 @@ highlight ColorColumn ctermbg=darkgrey
 "autocmd FileType python set textwidth=80
 "autocmd FileType python set colorcolumn=80
 " Indent settings
-" if i ever want to switch to disgusting tabs:
-" set ts=4 sw=4 sts=0 noet
-" set ts=4 sw=4 sts=4 et
-set ts=2 sw=2 sts=2 et
+" set ts=4 sw=4 sts=0 noet "tabs
+set tabstop=4 shiftwidth=4 softtabstop=4 et "notabs
 set linebreak
 set list listchars=tab:>\ ,trail:·,nbsp:+
 set visualbell
-set number relativenumber numberwidth=2
+set number numberwidth=2
 set ignorecase smartcase
 set splitbelow splitright
 set hidden
+set wildignorecase "case insensitive tab completion
 " highlight TODO for every filetype
 augroup HiglightTODO
     autocmd!
     autocmd WinEnter,VimEnter * :silent! call matchadd('Todo', 'TODO\|FIXME\|HACK\|DONE', -1)
 augroup END
 "__FILE_SPECIFIC
+" let default file type be logcat
+autocmd BufEnter * if &filetype == "" | setlocal ft=logcat | endif
 " spellcheck for notes
-autocmd BufRead,BufNewFile notes setlocal spell spelllang=en_us spellcapcheck=''
+autocmd BufRead,BufNewFile notes setlocal spell spelllang=en_us spellcapcheck='' | AutoSaveToggle
 " vertical help window
 autocmd FileType help wincmd L
 " i can't input backticks lol
@@ -116,10 +107,14 @@ autocmd FileType tex setlocal spell spellcapcheck=''
 autocmd FileType SIGKILL inoremap E ▘
 autocmd FileType SIGKILL inoremap O ⊙
 autocmd FileType SIGKILL inoremap I i
+autocmd Filetype gitcommit setlocal spell textwidth=64
 " speed up macros
 set lazyredraw
 
 "_PLUGIN
+let g:mwDefaultHighlightingPalette = 'extended'
+let g:smoothie_update_interval = 16
+let g:smoothie_base_speed = 16
 "__AIRLINE
 let g:airline#extensions#tabline#enabled=1
 let g:airline#extensions#syntastic#enabled=1
@@ -164,9 +159,7 @@ let g:auto_save_no_updatetime = 1
 let g:auto_save_in_insert_mode = 0
 
 "__DEOPLETE
-if has('nvim')
-    let g:deoplete#enable_at_startup = 1
-endif
+let g:deoplete#enable_at_startup = 1
 
 "__FZF
 " Customize fzf colors to match your color scheme
@@ -186,13 +179,19 @@ let g:fzf_colors =
 " Advanced customization using autoload functions
 inoremap <expr> <c-x><c-k> fzf#vim#complete#word({'left': '14%'})"
 
+"__GITGUTTER
+let g:gitgutter_highlight_linenrs = 1
+let g:gitgutter_grep = 'rg'
+
+"__INDENT
+let g:indent_guides_enable_on_vim_startup = 1
+let g:indent_guides_guide_size = 1
+
 "__POLYGLOT
 let g:polyglot_disabled = ['latex']
 
-
-"__SMOOTH_SCROLL
-let g:comfortable_motion_friction = 100.0
-let g:comfortable_motion_air_drag = 2.0
+"__RAINBOW
+let g:rainbow_active = 1
 
 "__SYNTASTIC
 "let g:syntastic_cpp_compiler_options = '$(pkg-config gtkmm-3.0 --cflags --libs)'
@@ -214,17 +213,16 @@ endif
 let g:undotree_WindowLayout = 2
 let g:undotree_SetFocusWhenToggle = 1
 
-"__VIMWIKI
-let wiki = [{}]
-if hostname() == 'SHODAN'
-    " laptop
-    let wiki[0].path = '~/Dropbox/vimwiki'
-elseif hostname() == 'VISION'
-    " desktop
-    let wiki[0].path = '/mnt/Stuff/Dropbox/vimwiki'
-endif
-let wiki[0].nested_syntaxes = {'python': 'python', 'c++': 'cpp', 'java': 'java'}
-let g:vimwiki_list = wiki
+"__CPP HIGHLIGHTING
+let g:cpp_class_scope_highlight = 1
+let g:cpp_member_variable_highlight = 1
+let g:cpp_class_decl = 1
+let g:cpp_experimental_simple_template_hightlight = 1
+
+"__MULTIPLESEARCH
+let g:MultipleSearchMaxColors = 8
+let g:MultipleSearchColorSequence = "red,yellow,blue,green,magenta,cyan,gray,brown"
+let g:MultipleSearchTextColorSequence = "white,black,black,black,black,white,white,white"
 
 "_KEYBINDINGS
 " essential
@@ -260,10 +258,36 @@ nnoremap <leader>ya :%y+
 " use gundo
 nnoremap <leader>u :UndotreeToggle<CR>
 " use easyalign
-vnoremap <Enter> <Plug>(EasyAlign)
+xmap <Enter> <Plug>(EasyAlign)
 "nmap <Leader>a <Plug>(EasyAlign)
 " neovim terminal escape
 if has('nvim')
     tnoremap <Esc> <C-\><C-n>
     tnoremap jk <C-\><C-n>
 endif
+nnoremap :E<Space> :Files<Enter>
+nnoremap :b :Buf<Enter>
+nnoremap / /\v
+
+" _OTHER
+" cscope
+function! Cscope(option, query)
+  let color = '{ x = $1; $1 = ""; z = $3; $3 = ""; printf "\033[34m%s\033[0m:\033[31m%s\033[0m\011\033[37m%s\033[0m\n", x,z,$0; }'
+  let opts = {
+  \ 'source':  "cscope -dL" . a:option . " " . a:query . " | awk '" . color . "'",
+  \ 'options': ['--ansi', '--prompt', '> ',
+  \             '--multi', '--bind', 'alt-a:select-all,alt-d:deselect-all',
+  \             '--color', 'fg:188,fg+:222,bg+:#3a3a3a,hl+:104'],
+  \ 'down': '40%'
+  \ }
+  function! opts.sink(lines) 
+    let data = split(a:lines)
+    let file = split(data[0], ":")
+    execute 'e ' . '+' . file[1] . ' ' . file[0]
+  endfunction
+  call fzf#run(opts)
+endfunction
+
+" Invoke command. 'g' is for call graph, kinda.
+nnoremap <silent> <Leader>g :call Cscope('3', expand('<cword>'))<CR>
+

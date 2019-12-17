@@ -10,3 +10,6 @@
 [submodule "laptop_awesomewm/.config/awesome/lain"]
 	path = laptop_awesomewm/.config/awesome/lain
 	url = git://github.com/copycat-killer/lain.git
+[submodule "laptop_awesomewm/.config/awesome/awesome-wm-widgets"]
+	path = laptop_awesomewm/.config/awesome/awesome-wm-widgets
+	url = git://github.com/streetturtle/awesome-wm-widgets.git

@@ -10,6 +10,7 @@ clear      mod3
 clear      mod4
 clear      mod5
 keycode      66 = Hyper_L
+!keycode      66 = Super_L
 keycode      37 = Control_L
 keycode      133 = Super_L
 keycode      135 = Caps_Lock

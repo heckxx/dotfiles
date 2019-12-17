@@ -16,10 +16,10 @@ URxvt*.foreground: #00DD00
 URxvt.iconFile: /usr/share/icons/Clarity/scalable/apps/terminal.svg
 
 !urxvt fonts: 
-URxvt.font: xft:Hack:antialias=true:pixelsize=12
-URxvt.boldFont: xft:Hack:bold:antialias=true:pixelsize=12
-URxvt.italicFont: xft:Hack:italic:antialias=true:pixelsize=12
-URxvt.boldItalicFont: xft:Hack:bolditalic:antialias=true:pixelsize=12
+URxvt.font: xft:Hack:antialias=true:pixelsize=14
+URxvt.boldFont: xft:Hack:bold:antialias=true:pixelsize=14
+URxvt.italicFont: xft:Hack:italic:antialias=true:pixelsize=14
+URxvt.boldItalicFont: xft:Hack:bolditalic:antialias=true:pixelsize=14
 URxvt.letterSpace: -1
 
 !urxvt extensions:

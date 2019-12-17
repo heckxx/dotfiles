@@ -45,6 +45,9 @@
 "mpc toggle"
   control+shift + KP_Divide
 
+"flameshot gui"
+  control+shift + x
+
 # set directly keycode (here control + f with my keyboard)
 #"xterm"
   #c:41 + m:0x4
