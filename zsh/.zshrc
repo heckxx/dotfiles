@@ -7,15 +7,15 @@ fi
 source ~/.zplug/init.zsh
 
 zplug "hchbaw/auto-fu.zsh"
-# zplug "b4b4r07/enhancd", use:init.sh
+#zplug "b4b4r07/enhancd", use:init.sh
 zplug "zplug/zplug"
 zplug "chrissicool/zsh-256color"
 zplug "lib/git", from:oh-my-zsh
 zplug "plugins/colored-man-pages", from:oh-my-zsh
-zplug "plugins/command-not-found", from:oh-my-zsh
+#zplug "plugins/command-not-found", from:oh-my-zsh
 zplug "zsh-users/zsh-autosuggestions"
 zplug "zdharma/fast-syntax-highlighting", defer:2
-zplug "zsh-users/zsh-history-substring-search"
+#zplug "zsh-users/zsh-history-substring-search"
 
 zplug "romkatv/powerlevel10k", as:theme, depth:1
 
@@ -77,20 +77,30 @@ export ENHANCD_HOOK_AFTER_CD="l"
 # ctrl + arrow, move by word
 bindkey '^[[1;5C' forward-word
 bindkey '^[[1;5D' backward-word
+# ctrl + space, execute autosuggestion
+bindkey '^@' autosuggest-execute
 
 ## History
 HISTFILE="$HOME/.zsh_history"
-setopt extended_history       # Ignore commands with a space in front
-setopt hist_ignore_space      # Ignore commands with a space in front
-setopt hist_ignore_dups       # Ignore duplicates with ctrl R
+HISTSIZE=10000
+setopt extended_history       # save timestamps
+setopt hist_ignore_space      # ignore commands with a space in front
+setopt hist_ignore_dups       # ignore duplicates with ctrl R
 setopt hist_expire_dups_first # delete dups first when HISTFILE size exceeds HISTSIZE
 setopt hist_verify            # show history expansion before running
-setopt share_history          # Share history between terminals
+setopt share_history          # share history between terminals
 # cd history tab completion
 setopt auto_pushd                  # pushes the old directory onto the stack
 setopt pushd_minus                 # exchange the meanings of '+' and '-'
 setopt cdable_vars                 # expand the expression (allows 'cd -2/tmp')
-autoload -U compinit && compinit   # load + start completion
+# only build completion cache once a day
+autoload -Uz compinit
+if [[ -n ~/.zcompdump(#qN.mh+24) ]]; then
+    compinit
+    touch .zcompdump
+else
+    compinit -uC
+fi
 zstyle ':completion:*:directory-stack' list-colors '=(#b) #([0-9]#)*( *)==95=38;5;12'
 # typing... + arrow, fuzzy find history
 if [[ "${terminfo[kcuu1]}" != "" ]]; then
