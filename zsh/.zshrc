@@ -26,7 +26,6 @@ fi
 zplug load
 
 ## Prompt
-#export PROMPT='%{$fg[magenta]%}%n%{$reset_color%}@%{$fg[yellow]%}[$TARGET_PRODUCT-$TARGET_BUILD_VARIANT]%{$fg[magenta]%}${ASP_BUILD_FROM_SOURCE++ASP} %{$fg[blue]%}%~%{$reset_color%}$ '
 [[ ! -f ~/.p10k.zsh ]] || source ~/.p10k.zsh
 POWERLEVEL9K_LEFT_PROMPT_ELEMENTS=(
     # os_icon               # os identifier
