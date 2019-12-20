@@ -5,12 +5,14 @@ if empty(glob('~/.vim/autoload/plug.vim'))
   autocmd VimEnter * PlugInstall --sync | source $MYVIMRC
 endif
 
-"_VIMPLUG
+"""""""""""
+" Plugins "
+"""""""""""
 call plug#begin('~/.vim/plugins')
 Plug '907th/vim-auto-save'
 Plug 'Yggdroot/indentLine'
-Plug 'airblade/vim-gitgutter'
-Plug 'ap/vim-css-color'
+"Plug 'airblade/vim-gitgutter'
+Plug 'mhinz/vim-signify'
 Plug 'aserebryakov/vim-todo-lists'
 Plug 'beloglazov/vim-online-thesaurus'
 Plug 'embear/vim-foldsearch'
@@ -22,12 +24,12 @@ Plug 'junegunn/fzf', { 'dir': '~/.fzf', 'do': './install --all' }
 Plug 'junegunn/fzf.vim'                 " fuzzy finder
 Plug 'junegunn/vim-easy-align'          " easy align
 Plug 'kshenoy/vim-signature'            " display marks
-Plug 'lervag/vimtex'
 Plug 'luochen1990/rainbow'
 Plug 'markonm/traces.vim'               " command preview
 Plug 'mbbill/undotree'
 Plug 'nanotech/jellybeans.vim'
 Plug 'nathanaelkane/vim-indent-guides'
+"Plug 'neoclide/coc.nvim', {'branch': 'release'}
 Plug 'octol/vim-cpp-enhanced-highlight' " cpp syntax highlighting
 Plug 'powerman/vim-plugin-AnsiEsc'
 Plug 'psliwka/vim-smoothie'
@@ -42,7 +44,11 @@ Plug 'vimwiki/vimwiki'
 Plug 'w0rp/ale'
 if has('nvim')
     Plug 'Shougo/deoplete.nvim', { 'do': ':UpdateRemotePlugins' }
+    Plug 'Shougo/deoplete-clangx'
+    Plug 'donRaphaco/neotex', { 'for': 'tex' }
+    Plug 'norcalli/nvim-colorizer.lua'
 else
+    Plug 'lervag/vimtex'
     Plug 'tpope/vim-sensible'
 endif
 call plug#end()
@@ -52,10 +58,11 @@ autocmd VimEnter *
   \|   PlugInstall --sync | q
   \| endif
 
-"_SETTINGS
-"__VIM_SPECIFIC
-" vim defaults (nvim already has these by default)
+""""""""""""
+" Settings "
+""""""""""""
 if !has('nvim')
+" vim defaults (nvim already has these by default)
     syntax enable
     set showcmd
     set smarttab
@@ -63,21 +70,122 @@ if !has('nvim')
     " centralized directory for backup/swap files
     set backupdir=~/.vim/backup//
     set directory=~/.vim/swap//
+    set undodir=~/.vim/undo//
 endif
-let g:netrw_liststyle=3
+if has("persistent_undo")
+    set undodir=~/.vim/undo//
+    set undofile
+endif
+set updatetime=100
 let g:python3_host_prog='/usr/bin/python3.7'
 
-"__OTHER
-" colorscheme with transparant backgrount
+"""""""""""""""
+" Keybindings "
+"""""""""""""""
+" essentials
+map <space> <leader>
+nnoremap j gj
+nnoremap k gk
+nnoremap Q @@
+inoremap jk <esc>
+" verymagic search by default
+nnoremap / /\v
+" Save as sudo when vim is not root
+cnoremap w!! w !sudo tee > /dev/null %
+" splits navigation ctrl+direction
+nnoremap <c-j> <c-w><c-j>
+nnoremap <c-h> <c-w><c-h>
+nnoremap <c-l> <c-w><c-l>
+nnoremap <c-k> <c-w><c-k>
+" FZF searching
+" Mapping selecting mappings
+nnoremap <leader><tab> <plug>(fzf-maps-n)
+xnoremap <leader><tab> <plug>(fzf-maps-x)
+onoremap <leader><tab> <plug>(fzf-maps-o)
+" Insert mode completion
+"imap <tab>k <plug>(fzf-complete-word)
+"imap <tab>f <plug>(fzf-complete-path)
+"imap <tab>j <plug>(fzf-complete-file-ag)
+"imap <tab>l <plug>(fzf-complete-line)
+nnoremap ? :Lines<Enter>
+nnoremap :b :Buf<Enter>
+nnoremap :E<Space> :Files<Enter>
+" Add selected word to dictionary
+nnoremap <leader>s 1z=
+nnoremap <leader>ya :%y+
+nnoremap <leader>u :UndotreeToggle<CR>
+xmap <Enter> <Plug>(EasyAlign)
+" neovim terminal escape
+if has('nvim')
+    tnoremap <Esc> <C-\><C-n>
+    tnoremap jk <C-\><C-n>
+endif
+
+"""""""
+" GUI "
+"""""""
+" Colors
+if has('nvim') | set termguicolors | endif
+" transparent colors
+let g:jellybeans_overrides = {
+\    'background': { 'ctermbg': 'none', '256ctermbg': 'none' },
+\}
+if has('termguicolors') && &termguicolors
+    let g:jellybeans_overrides['background']['guibg'] = 'none'
+endif
 colorscheme jellybeans
-hi NonText ctermbg=NONE
-hi Normal ctermbg=NONE
+if has('nvim')
+    lua require 'colorizer'.setup()
+endif
+" Marks
+let g:mw_no_mappings = 1
+let g:mwDefaultHighlightingPalette = [
+\{ 'ctermbg':'Blue',        'ctermfg':'White', 'guibg':'#80AAFF',     'guifg':'Black' },
+\{ 'ctermbg':'Magenta',     'ctermfg':'White', 'guibg':'#FFAAFF',     'guifg':'Black' },
+\{ 'ctermbg':'Green',       'ctermfg':'White', 'guibg':'#ACFFA1',     'guifg':'Black' },
+\{ 'ctermbg':'Yellow',      'ctermfg':'Black', 'guibg':'#FFE8A1',     'guifg':'Black' },
+\{ 'ctermbg':'Cyan',        'ctermfg':'Black', 'guibg':'#A1FEFF',     'guifg':'Black' },
+\{ 'ctermbg':'Red',         'ctermfg':'Black', 'guibg':'#FFAAAA',     'guifg':'Black' },
+\{ 'ctermbg':'DarkBlue',    'ctermfg':'White', 'guibg':'DarkBlue',    'guifg':'White' },
+\{ 'ctermbg':'DarkMagenta', 'ctermfg':'White', 'guibg':'DarkMagenta', 'guifg':'White' },
+\{ 'ctermbg':'DarkGreen',   'ctermfg':'White', 'guibg':'DarkGreen',   'guifg':'White' },
+\{ 'ctermbg':'DarkYellow',  'ctermfg':'White', 'guibg':'DarkYellow',  'guifg':'Black' },
+\{ 'ctermbg':'DarkCyan',    'ctermfg':'White', 'guibg':'DarkCyan',    'guifg':'White' },
+\{ 'ctermbg':'DarkRed',     'ctermfg':'White', 'guibg':'DarkRed',     'guifg':'White' },
+\{ 'ctermbg':'White',       'ctermfg':'Black', 'guibg':'#E3E3D2',     'guifg':'Black' },
+\{ 'ctermbg':'LightGray',   'ctermfg':'Black', 'guibg':'#D3D3C3',     'guifg':'Black' },
+\{ 'ctermbg':'Gray',        'ctermfg':'White', 'guibg':'#A3A396',     'guifg':'Black' },
+\{ 'ctermbg':'Red',         'ctermfg':'White', 'guibg':'#AA0000',     'guifg':'White' },
+\]
 " Mark over 80 char lines
 highlight ColorColumn ctermbg=darkgrey
+nnoremap <Leader>/ :Mark //<Left>
 " set colorcolumn=81
 " autocmd FileType python call matchadd('ColorColumn','\%81v',100)
 "autocmd FileType python set textwidth=80
 "autocmd FileType python set colorcolumn=80
+
+"""""""""""""""""
+" Functionality "
+"""""""""""""""""
+let g:netrw_liststyle=3 " tree style listing
+set splitbelow splitright
+set lazyredraw          " speed up macros
+set wildignorecase      " case insensitive tab completion
+" Ctrl j+k for completion, Ctrl l for digraphs
+inoremap <c-j> <c-n>
+inoremap <c-k> <c-p>
+inoremap <c-l> <c-k>
+" Git gutter signs
+let g:signify_sign_change = '~'
+highlight SignColumn ctermbg=NONE cterm=NONE guibg=NONE gui=NONE
+highlight SignifySignAdd ctermfg=LightGreen guifg=LightGreen
+highlight SignifySignDelete ctermfg=LightRed guifg=LightRed
+highlight SignifySignChange ctermfg=LightBlue guifg=LightBlue
+
+""""""""""""""
+" Formatting "
+""""""""""""""
 " Indent settings
 " set ts=4 sw=4 sts=0 noet "tabs
 set tabstop=4 shiftwidth=4 softtabstop=4 et "notabs
@@ -86,33 +194,32 @@ set list listchars=tab:>\ ,trail:·,nbsp:+
 set visualbell
 set number numberwidth=2
 set ignorecase smartcase
-set splitbelow splitright
 set hidden
-set wildignorecase "case insensitive tab completion
 " highlight TODO for every filetype
 augroup HiglightTODO
     autocmd!
     autocmd WinEnter,VimEnter * :silent! call matchadd('Todo', 'TODO\|FIXME\|HACK\|DONE', -1)
 augroup END
-"__FILE_SPECIFIC
-" let default file type be logcat
-autocmd BufEnter * if &filetype == "" | setlocal ft=logcat | endif
-" spellcheck for notes
-autocmd BufRead,BufNewFile notes setlocal spell spelllang=en_us spellcapcheck='' | AutoSaveToggle
 " vertical help window
 autocmd FileType help wincmd L
+"""""""""""""""""
+" File Specific "
+"""""""""""""""""
+" let default file type be logcat
+autocmd BufEnter * if &filetype == "" | setlocal ft=logcat | endif
+" enable spellcheck+autosave for notes
+autocmd BufRead,BufNewFile notes setlocal spell spelllang=en_us spellcapcheck='' | AutoSaveToggle
+" latex
+let g:neotex_enabled = 2
+let g:neotex_latexdiff = 1
+let g:tex_flavor = 'latex'
 " i can't input backticks lol
 autocmd FileType tex inoremap " ``
 autocmd FileType tex setlocal spell spellcapcheck=''
-autocmd FileType SIGKILL inoremap E ▘
-autocmd FileType SIGKILL inoremap O ⊙
 autocmd FileType SIGKILL inoremap I i
 autocmd Filetype gitcommit setlocal spell textwidth=64
-" speed up macros
-set lazyredraw
 
-"_PLUGIN
-let g:mwDefaultHighlightingPalette = 'extended'
+""_PLUGINS
 let g:smoothie_update_interval = 16
 let g:smoothie_base_speed = 16
 "__AIRLINE
@@ -149,7 +256,6 @@ call airline#parts#define_function('ALE', 'ALEGetStatusLine')
 call airline#parts#define_condition('ALE', 'exists("*ALEGetStatusLine")')
 let g:airline_section_error = airline#section#create_right(['ALE'])
 let g:jellybeans_background_color_256='NONE'
-
 "__ALE
 let g:ale_lint_delay = 500
 
@@ -193,23 +299,7 @@ let g:polyglot_disabled = ['latex']
 "__RAINBOW
 let g:rainbow_active = 1
 
-"__SYNTASTIC
-"let g:syntastic_cpp_compiler_options = '$(pkg-config gtkmm-3.0 --cflags --libs)'
-"let g:syntastic_c_compiler_options = '$(pkg-config gtk+-3.0 --cflags --libs)'
-"__TASKS
-let g:TasksAttributeMarker = '#'
-"__ULTISNIPS
-let g:UltiSnipsExpandTrigger="<c-Space>"
-let g:UltiSnipsJumpForwardTrigger="<c-b>"
-let g:UltiSnipsJumpBackwardTrigger="<c-z>"
-" If you want :UltiSnipsEdit to split your window.
-let g:UltiSnipsEditSplit="vertical"
-
 "__UNDOTREE
-if has("persistent_undo")
-    set undodir=~/.vim/undo/
-    set undofile
-endif
 let g:undotree_WindowLayout = 2
 let g:undotree_SetFocusWhenToggle = 1
 
@@ -218,56 +308,6 @@ let g:cpp_class_scope_highlight = 1
 let g:cpp_member_variable_highlight = 1
 let g:cpp_class_decl = 1
 let g:cpp_experimental_simple_template_hightlight = 1
-
-"__MULTIPLESEARCH
-let g:MultipleSearchMaxColors = 8
-let g:MultipleSearchColorSequence = "red,yellow,blue,green,magenta,cyan,gray,brown"
-let g:MultipleSearchTextColorSequence = "white,black,black,black,black,white,white,white"
-
-"_KEYBINDINGS
-" essential
-map <space> <leader>
-nnoremap j gj
-nnoremap k gk
-nnoremap Q @@
-inoremap jk <esc>
-" Save as sudo when vim is not root
-cnoremap w!! w !sudo tee > /dev/null %
-" multiple cursors
-let g:multi_cursor_insert_maps={'j':1}
-" split navigation ctrl+direction
-nnoremap <c-j> <c-w><c-j>
-nnoremap <c-h> <c-w><c-h>
-nnoremap <c-l> <c-w><c-l>
-nnoremap <c-k> <c-w><c-k>
-" FZF searching
-" Mapping selecting mappings
-nnoremap <leader><tab> <plug>(fzf-maps-n)
-xnoremap <leader><tab> <plug>(fzf-maps-x)
-onoremap <leader><tab> <plug>(fzf-maps-o)
-" Insert mode completion
-"imap <tab>k <plug>(fzf-complete-word)
-"imap <tab>f <plug>(fzf-complete-path)
-"imap <tab>j <plug>(fzf-complete-file-ag)
-"imap <tab>l <plug>(fzf-complete-line)
-nnoremap ? :Lines<Enter>
-nnoremap <leader>b :Buffers<Enter>
-" Add selected word to dictionary
-nnoremap <leader>s 1z=
-nnoremap <leader>ya :%y+
-" use gundo
-nnoremap <leader>u :UndotreeToggle<CR>
-" use easyalign
-xmap <Enter> <Plug>(EasyAlign)
-"nmap <Leader>a <Plug>(EasyAlign)
-" neovim terminal escape
-if has('nvim')
-    tnoremap <Esc> <C-\><C-n>
-    tnoremap jk <C-\><C-n>
-endif
-nnoremap :E<Space> :Files<Enter>
-nnoremap :b :Buf<Enter>
-nnoremap / /\v
 
 " _OTHER
 " cscope
