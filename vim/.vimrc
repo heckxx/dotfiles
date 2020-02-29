@@ -8,16 +8,25 @@ endif
 """""""""""
 " Plugins "
 """""""""""
+
 call plug#begin('~/.vim/plugins')
 Plug '907th/vim-auto-save'
 Plug 'Yggdroot/indentLine'
-"Plug 'airblade/vim-gitgutter'
+Plug 'chrisbra/recover.vim'
 Plug 'mhinz/vim-signify'
+Plug 'derekwyatt/vim-fswitch'
+Plug 'camspiers/lens.vim'
 Plug 'aserebryakov/vim-todo-lists'
 Plug 'beloglazov/vim-online-thesaurus'
 Plug 'embear/vim-foldsearch'
+Plug 'jaxbot/semantic-highlight.vim'
+Plug 'rhysd/vim-clang-format'
+autocmd FileType c,cpp,objc map <buffer><Leader>= <Plug>(operator-clang-format)
 Plug 'honza/vim-snippets'
+Plug 'ericcurtin/CurtineIncSw.vim'
 Plug 'inkarkat/vim-ingo-library'
+Plug 'iamcco/markdown-preview.nvim', { 'do': { -> mkdp#util#install() } }
+let g:mkdp_auto_start = 1
 Plug 'inkarkat/vim-mark'
 Plug 'irrationalistic/vim-tasks'
 Plug 'junegunn/fzf', { 'dir': '~/.fzf', 'do': './install --all' }
@@ -30,23 +39,31 @@ Plug 'mbbill/undotree'
 Plug 'nanotech/jellybeans.vim'
 Plug 'nathanaelkane/vim-indent-guides'
 "Plug 'neoclide/coc.nvim', {'branch': 'release'}
-Plug 'octol/vim-cpp-enhanced-highlight' " cpp syntax highlighting
+Plug 'bfrg/vim-cpp-modern' " cpp syntax highlighting
 Plug 'powerman/vim-plugin-AnsiEsc'
-Plug 'psliwka/vim-smoothie'
+Plug 'psliwka/vim-smoothie'             " smooth scrolling
 Plug 'sheerun/vim-polyglot'
-Plug 'terryma/vim-multiple-cursors'
-Plug 'thinca/vim-logcat'
+let g:vim_markdown_conceal = 0
+let g:vim_markdown_conceal_code_blocks = 0
+Plug 'thinca/vim-logcat'                " logcat highlighting
 Plug 'tpope/vim-fugitive'
 Plug 'tpope/vim-surround'
+Plug 'tpope/vim-repeat'
 Plug 'vim-airline/vim-airline'
 Plug 'vim-scripts/advancedsorters'
 Plug 'vimwiki/vimwiki'
-Plug 'w0rp/ale'
+"Plug 'w0rp/ale'
 if has('nvim')
     Plug 'Shougo/deoplete.nvim', { 'do': ':UpdateRemotePlugins' }
+    " close preview after leaving insert mode
+    autocmd InsertLeave,CompleteDone * if pumvisible() == 0 | pclose | endif
+    " Tab completion
+    inoremap <expr><TAB>  pumvisible() ? "\<C-n>" : "\<TAB>"
+
     Plug 'Shougo/deoplete-clangx'
+    Plug 'Shougo/neoinclude.vim'
     Plug 'donRaphaco/neotex', { 'for': 'tex' }
-    Plug 'norcalli/nvim-colorizer.lua'
+    Plug 'norcalli/nvim-colorizer.lua' " preview colors
 else
     Plug 'lervag/vimtex'
     Plug 'tpope/vim-sensible'
@@ -68,9 +85,13 @@ if !has('nvim')
     set smarttab
     set hlsearch
     " centralized directory for backup/swap files
-    set backupdir=~/.vim/backup//
+    set nobackup
+    set nowritebackup
     set directory=~/.vim/swap//
     set undodir=~/.vim/undo//
+endif
+if has("patch-8.1.0360")
+    set diffopt+=internal,algorithm:patience
 endif
 if has("persistent_undo")
     set undodir=~/.vim/undo//
@@ -109,17 +130,39 @@ onoremap <leader><tab> <plug>(fzf-maps-o)
 "imap <tab>l <plug>(fzf-complete-line)
 nnoremap ? :Lines<Enter>
 nnoremap :b :Buf<Enter>
-nnoremap :E<Space> :Files<Enter>
+nnoremap <C-p> :Files<Enter>
 " Add selected word to dictionary
 nnoremap <leader>s 1z=
 nnoremap <leader>ya :%y+
 nnoremap <leader>u :UndotreeToggle<CR>
+map <A-o> :call CurtineIncSw()<Cr>
 xmap <Enter> <Plug>(EasyAlign)
 " neovim terminal escape
 if has('nvim')
     tnoremap <Esc> <C-\><C-n>
     tnoremap jk <C-\><C-n>
 endif
+"""COC"""
+"inoremap <silent><expr> <TAB>
+"      \ pumvisible() ? "\<C-n>" :
+"      \ <SID>check_back_space() ? "\<TAB>" :
+"      \ coc#refresh()
+"inoremap <expr><S-TAB> pumvisible() ? "\<C-p>" : "\<C-h>"
+"function! s:check_back_space() abort
+"  let col = col('.') - 1
+"  return !col || getline('.')[col - 1]  =~# '\s'
+"endfunction
+"inoremap <expr> <cr> complete_info()["selected"] != "-1" ? "\<C-y>" : "\<C-g>u\<CR>"
+"" Use K to show documentation in preview window
+"function! s:show_documentation()
+"  if (index(['vim','help'], &filetype) >= 0)
+"    execute 'h '.expand('<cword>')
+"  else
+"    call CocAction('doHover')
+"  endif
+"endfunction
+"nnoremap <silent> K :call <SID>show_documentation()<CR>
+"autocmd CursorHold * silent call CocActionAsync('highlight')
 
 """""""
 " GUI "
@@ -140,9 +183,9 @@ endif
 " Marks
 let g:mw_no_mappings = 1
 let g:mwDefaultHighlightingPalette = [
-\{ 'ctermbg':'Blue',        'ctermfg':'White', 'guibg':'#80AAFF',     'guifg':'Black' },
-\{ 'ctermbg':'Magenta',     'ctermfg':'White', 'guibg':'#FFAAFF',     'guifg':'Black' },
-\{ 'ctermbg':'Green',       'ctermfg':'White', 'guibg':'#ACFFA1',     'guifg':'Black' },
+\{ 'ctermbg':'Blue',        'ctermfg':'Black', 'guibg':'#80AAFF',     'guifg':'Black' },
+\{ 'ctermbg':'Magenta',     'ctermfg':'Black', 'guibg':'#FFAAFF',     'guifg':'Black' },
+\{ 'ctermbg':'Green',       'ctermfg':'Black', 'guibg':'#ACFFA1',     'guifg':'Black' },
 \{ 'ctermbg':'Yellow',      'ctermfg':'Black', 'guibg':'#FFE8A1',     'guifg':'Black' },
 \{ 'ctermbg':'Cyan',        'ctermfg':'Black', 'guibg':'#A1FEFF',     'guifg':'Black' },
 \{ 'ctermbg':'Red',         'ctermfg':'Black', 'guibg':'#FFAAAA',     'guifg':'Black' },
@@ -182,6 +225,17 @@ highlight SignColumn ctermbg=NONE cterm=NONE guibg=NONE gui=NONE
 highlight SignifySignAdd ctermfg=LightGreen guifg=LightGreen
 highlight SignifySignDelete ctermfg=LightRed guifg=LightRed
 highlight SignifySignChange ctermfg=LightBlue guifg=LightBlue
+" Deoplete
+let g:deoplete#enable_at_startup = 1
+call deoplete#custom#var('clangx', 'clang_binary', '/usr/bin/clang')
+call deoplete#custom#var('clangx', 'default_c_options', '')
+call deoplete#custom#var('clangx', 'default_cpp_options', '')
+" Logcat
+"autocmd FileType logcat set notermguicolors
+autocmd BufReadPost * if exists("b:current_syntax") && b:current_syntax == "logcat"
+autocmd BufReadPost *     syn keyword myTags AudioALSA AudioPatch
+autocmd BufReadPost *     syn keyword myKeywords success
+autocmd BufReadPost * endif
 
 """"""""""""""
 " Formatting "
@@ -264,8 +318,6 @@ let g:auto_save = 0
 let g:auto_save_no_updatetime = 1
 let g:auto_save_in_insert_mode = 0
 
-"__DEOPLETE
-let g:deoplete#enable_at_startup = 1
 
 "__FZF
 " Customize fzf colors to match your color scheme

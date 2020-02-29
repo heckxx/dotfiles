@@ -14,6 +14,7 @@ zplug "lib/git", from:oh-my-zsh
 zplug "plugins/colored-man-pages", from:oh-my-zsh
 #zplug "plugins/command-not-found", from:oh-my-zsh
 zplug "zsh-users/zsh-autosuggestions"
+zplug "MichaelAquilina/zsh-auto-notify"
 zplug "zdharma/fast-syntax-highlighting", defer:2
 #zplug "zsh-users/zsh-history-substring-search"
 
@@ -40,7 +41,6 @@ POWERLEVEL9K_RIGHT_PROMPT_ELEMENTS=(
     background_jobs         # presence of background jobs
     virtualenv              # python virtual environment (https://docs.python.org/3/library/venv.html)
     envstatus               # CUSTOM: environment status
-    public_ip               # public IP address
     battery                 # internal battery
 )
 ## Fuzzy completion
@@ -96,10 +96,17 @@ setopt cdable_vars                 # expand the expression (allows 'cd -2/tmp')
 autoload -Uz compinit
 if [[ -n ~/.zcompdump(#qN.mh+24) ]]; then
     compinit
-    touch .zcompdump
+    touch ~/.zcompdump
 else
     compinit -uC
 fi
+zstyle ':completion:*' menu select
+zmodload zsh/complist
+# use the vi navigation keys in menu completion
+bindkey -M menuselect '^h' vi-backward-char
+bindkey -M menuselect '^k' vi-up-line-or-history
+bindkey -M menuselect '^l' vi-forward-char
+bindkey -M menuselect '^j' vi-down-line-or-history
 zstyle ':completion:*:directory-stack' list-colors '=(#b) #([0-9]#)*( *)==95=38;5;12'
 # typing... + arrow, fuzzy find history
 if [[ "${terminfo[kcuu1]}" != "" ]]; then
@@ -112,11 +119,14 @@ if [[ "${terminfo[kcud1]}" != "" ]]; then
   zle -N down-line-or-beginning-search
   bindkey "${terminfo[kcud1]}" down-line-or-beginning-search
 fi
-
 # fix NTFS directory colors being unreadable in ls
 [ -f ~/.dircolors ] && eval $(dircolors -b ~/.dircolors)
 
+## Environment
+export AUTO_NOTIFY_THRESHOLD=20
+export AUTO_NOTIFY_WHITELIST=("bin-checkout-v2" "make")
 export PATH=$PATH:$HOME/bin
+export EDITOR=nvim
 
 # WSL config
 if uname -r |grep -q 'Microsoft' ; then
