@@ -1,20 +1,45 @@
-# vim: set ft=sh:
-# Shared aliases between bash and zsh
+# vim: ft=sh: set et ts=4 sw=4:
 
-alias ls='ls --color=auto'
-alias l='ls -alFh'
-alias la='ls -Ah'
-alias :e='nvim'
+alias ls='exa'
+alias cat='bat'
+alias j='fasd_cd -d'
+alias tmux='tmx2 new-session -A -s main'
+alias so='source ~/.zshrc'
+alias ll='ls -alF'
+alias la='ls -aa'
+alias l='ls -alF'
 alias :q='exit'
 alias please='sudo $(fc -ln -1)'
-#alias dir='dir --color=auto'
-#alias vdir='vdir --color=auto'
 alias ..='cd ..'
 alias ...='cd ../..'
 alias ....='cd ../../..'
 alias .....='cd ../../../..'
 alias ......='cd ../../../../..'
-alias grep='grep --color=auto'
-alias fgrep='fgrep --color=auto'
-alias egrep='egrep --color=auto'
+alias .......='cd ../../../../../..'
 
+function fasd_edit {
+  if [ "$#" -eq 0 ]; then
+    $EDITOR && return
+  fi
+  local file
+  local select
+  test -e "$1" && $EDITOR "$@" && return
+  file="$(fasd -fl "$*")"
+  if [[ -z "$file" ]]; then
+    return
+    #$EDITOR $1 && return
+  fi
+  select="$(echo $file | fzf --delimiter / --with-nth=-5..-1 -1 -0 --height=30% -m --min-height=30 --preview-window=up:60% --info=inline --border --no-sort --preview='bat --theme=1337 --decorations=always --italic-text=always --color=always --line-range :100 {}')"
+  if [[ -z "$select" ]]; then
+    return
+  fi
+  $EDITOR "${=select}"
+}
+alias :e=fasd_edit
+palette() {
+  local -a colors
+  for i in {000..255}; do
+    colors+=("%F{$i}$i%f")
+  done
+  print -cP $colors
+}
